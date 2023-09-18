@@ -9,6 +9,10 @@
     "scss": "node-sass --watch src/resources/scss/ -o src/public/css/",
     "start": "nodemon --inspect src/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NTT1410/haruta-job-recruitment.git"
+  },
   "author": "HaRuTa",
   "license": "ISC",
   "lint-staged": {
