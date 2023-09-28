@@ -3,9 +3,13 @@ const express = require("express");
 const morgan = require("morgan");
 const handlebars = require("express-handlebars");
 const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 
 const route = require("./routes");
 const db = require("./config/db");
+
+// Secret
+dotenv.config();
 
 //connect to db
 db.connect();
