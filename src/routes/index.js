@@ -14,7 +14,7 @@ function route(app) {
 	app.use("/users", userRouter);
 	app.use("/roles", role);
 	app.use("/user-roles", userRole);
-	app.use("/", requireAuth, siteRouter);
+	app.use("/", siteRouter);
 
 	// cookies
 	app.use("/cookies", cookies);
