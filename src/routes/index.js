@@ -9,7 +9,7 @@ const { requireAuth, checkUser } = require("../middleware/authMiddleware");
 
 function route(app) {
 	// app.use("*", checkUser);
-	app.use(authRouter);
+	app.use("/auth", authRouter);
 	app.use("/candidate", candidateRouter);
 	app.use("/users", userRouter);
 	app.use("/roles", role);
