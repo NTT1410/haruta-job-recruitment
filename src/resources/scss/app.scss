@@ -1,1 +1,29 @@
 @import "variables";
+.main {
+	padding-top: 74px;
+}
+
+@media (min-width: 992px) {
+	.main {
+		padding-left: 270px;
+	}
+	.nav-brand {
+		display: none;
+	}
+	#sidenav-1 {
+		height: 100%;
+		top: 45px;
+	}
+}
+
+#intro {
+	background-image: url("/img/bg2.png");
+	height: 110vh;
+}
+
+/* Height for devices larger than 576px */
+@media (min-width: 992px) {
+	#intro {
+		margin-top: -58.59px;
+	}
+}
