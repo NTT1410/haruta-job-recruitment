@@ -8,13 +8,13 @@ const cookies = require("./cookies");
 const { requireAuth, checkUser } = require("../middleware/authMiddleware");
 
 function route(app) {
-	app.use("*", checkUser);
+	// app.use("*", checkUser);
 	app.use(authRouter);
-	app.use("/candidate", requireAuth, candidateRouter);
+	app.use("/candidate", candidateRouter);
 	app.use("/users", userRouter);
 	app.use("/roles", role);
 	app.use("/user-roles", userRole);
-	app.use("/", requireAuth, siteRouter);
+	app.use("/", siteRouter);
 
 	// cookies
 	app.use("/cookies", cookies);
