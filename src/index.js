@@ -1,4 +1,5 @@
 const path = require("path");
+const http = require("http");
 const express = require("express");
 const morgan = require("morgan");
 const handlebars = require("express-handlebars");
@@ -15,7 +16,8 @@ dotenv.config();
 db.connect();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 5000;
+const server = http.createServer(app);
 
 // middleware
 app.use(express.static(path.join(__dirname, "public")));
@@ -47,6 +49,4 @@ app.set("views", path.join(__dirname, "resources", "views"));
 // Route
 route(app);
 
-app.listen(port, () =>
-	console.log(`App listening on port http://localhost:${port}`)
-);
+server.listen(port, () => console.log(`App listening on port ${port}`));
