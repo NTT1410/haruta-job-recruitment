@@ -16,11 +16,11 @@ dotenv.config();
 db.connect();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 // middleware
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(
 	express.urlencoded({
 		extended: true,
@@ -44,7 +44,7 @@ app.engine(
 );
 
 app.set("view engine", "hbs");
-// app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "resources", "views"));
 
 // Route
 route(app);
