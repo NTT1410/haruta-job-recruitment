@@ -49,4 +49,4 @@ app.set("views", path.join(__dirname, "resources", "views"));
 // Route
 route(app);
 
-server.listen(port, () => console.log(`App listening on port ${port}`));
+// server.listen(port, () => console.log(`App listening on port ${port}`));
