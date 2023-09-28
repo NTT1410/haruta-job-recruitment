@@ -20,7 +20,7 @@ const port = process.env.PORT || 5000;
 const server = http.createServer(app);
 
 // middleware
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 app.use(
 	express.urlencoded({
 		extended: true,
