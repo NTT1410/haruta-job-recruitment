@@ -41,12 +41,10 @@ const createToken = (id) => {
 };
 
 module.exports.signup_get = (req, res) => {
-	res.render("signup", { layout: false });
+	res.render("signup");
 };
 module.exports.login_get = (req, res) => {
-	res.render("login", {
-		disablePartials: true,
-	});
+	res.render("login");
 };
 module.exports.signup_post = async (req, res) => {
 	const day_of_birth = moment(req.body.day_of_birth, "DD-MM-YYYY");
