@@ -44,7 +44,9 @@ module.exports.signup_get = (req, res) => {
 	res.render("signup", { layout: false });
 };
 module.exports.login_get = (req, res) => {
-	res.render("login");
+	res.render("login", {
+		disablePartials: true,
+	});
 };
 module.exports.signup_post = async (req, res) => {
 	const day_of_birth = moment(req.body.day_of_birth, "DD-MM-YYYY");
