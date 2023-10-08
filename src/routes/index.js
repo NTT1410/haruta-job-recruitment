@@ -1,23 +1,36 @@
-const siteRouter = require("./site");
-const userRouter = require("./user");
-const userRole = require("./userRole");
-const role = require("./role");
-const candidateRouter = require("./candidate");
 const authRouter = require("./authRoutes");
 const cookies = require("./cookies");
-const { requireAuth, checkUser } = require("../middleware/authMiddleware");
+const apiRouter = require("./apiRoutes");
+const adminRouter = require("./adminRoutes");
+const siteRouter = require("./siteRoutes");
+const {
+	requireAuth,
+	checkUser,
+	checkCandidate,
+	checkAdmin,
+} = require("../middleware/authMiddleware");
+const CandidateController = require("../app/controllers/CandidateController");
 
 function route(app) {
+	app.get("/test", (req, res) => res.json(req.query.t));
 	app.use("*", checkUser);
+
+	// auth
 	app.use("/auth", authRouter);
-	app.use("/candidate", candidateRouter);
-	app.use("/users", userRouter);
-	app.use("/roles", role);
-	app.use("/user-roles", userRole);
-	app.use("/", requireAuth, siteRouter);
+
+	app.use("/*", requireAuth);
+
+	// admin checkAdmin
+	app.use("/admin", adminRouter);
+
+	// admin site
+	app.use("/", siteRouter);
 
 	// cookies
 	app.use("/cookies", cookies);
+
+	// api
+	app.use("/api", apiRouter);
 }
 
 module.exports = route;

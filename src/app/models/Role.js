@@ -10,6 +10,11 @@ const Role = new Schema({
 	description: {
 		type: String,
 	},
+	roleRank: {
+		type: Number,
+		required: true,
+		unique: true,
+	},
 });
 
 module.exports = mongoose.model("Role", Role);

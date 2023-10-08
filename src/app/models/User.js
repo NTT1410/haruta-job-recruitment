@@ -3,8 +3,7 @@ const Schema = mongoose.Schema;
 const slug = require("mongoose-slug-generator");
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
-
-mongoose.plugin(slug);
+var mongooseDelete = require("mongoose-delete");
 
 const User = new Schema(
 	{
@@ -21,7 +20,7 @@ const User = new Schema(
 		},
 		phone: {
 			type: String,
-			required: [true, "Please enter an phone number"],
+			// required: [true, "Please enter an phone number"],
 			validate: {
 				validator: (value) => {
 					const phoneRegex = /^\d{10}$/;
@@ -84,6 +83,14 @@ const User = new Schema(
 		timestamps: true,
 	}
 );
+
+// ADD Plugins
+mongoose.plugin(slug);
+User.plugin(mongooseDelete, {
+	deletedAt: true,
+	deletedBy: true,
+	overrideMethods: true,
+});
 
 // // fire a function after doc saved to database
 // User.post("save", function (doc, next) {

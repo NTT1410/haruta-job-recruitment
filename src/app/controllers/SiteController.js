@@ -3,24 +3,30 @@ const test = require("../models/Apply");
 
 class SiteController {
 	// [GET] /
-	// index(req, res, next) {
-	// 	async function getUsers() {
-	// 		const userlist = await User.find({});
-	// 		return userlist;
-	// 	}
-	// 	getUsers()
-	// 		.then(function findItems(item) {
-	// 			res.json(item);
-	// 		})
-	// 		.catch(next);
-	// }
-
-	// [GET] /
 	index(req, res, next) {
-		User.find({})
-			.lean()
-			.then((users) => res.render("home", { users }))
-			.catch(next);
+		res.render("home");
+	}
+
+	login(req, res, next) {
+		res.render("login", { layout: "mainLogin" });
+	}
+
+	candidate(req, res, next) {
+		res.render("candidate");
+	}
+
+	employer(req, res, next) {
+		res.render("employer");
+	}
+
+	async candidateDetails(req, res, next) {
+		const id = req.params.userId;
+		const user = await User.findById(id).lean();
+		res.render("candidates/show", { user });
+	}
+
+	candidateCreate(req, res, next) {
+		res.render("candidates/create");
 	}
 }
 

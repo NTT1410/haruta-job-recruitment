@@ -1,4 +1,4 @@
-<div class="row">
+{{!-- <div class="row">
 	<table class="table align-middle mb-0 bg-white table-hover">
 		<thead class="bg-light">
 			<tr>
@@ -46,44 +46,168 @@
 					</td>
 					<td>
 						<button type="button" class="btn btn-link btn-sm btn-rounded">
-							<a href="/candidate/detail/{{this._id}}">Edit</a>
+							<a href="/detail/{{this._id}}">Edit</a>
 						</button>
 					</td>
 				</tr>
 			{{/each}}
 		</tbody>
 	</table>
+</div> --}}
+
+<div class="row">
+	<h3 class="text-muted fw-bold fs-5 pb-4">
+
+		Dashboard
+	</h3>
 </div>
 
-<div class="card mb-3" style="max-width: 540px;">
-	<div class="row g-0">
-		<div class="col-md-8">
-			<div class="card-body">
-				<h5 class="card-title">Card title</h5>
-				<p class="card-text">
-					This is a wider card with supporting text below as a natural lead-in
-					to additional content. This content is a little bit longer.
-				</p>
-				<p class="card-text">
-					<small class="text-muted">Last updated 3 mins ago</small>
-				</p>
+<div class="row">
+	<div class="col-md-3">
+		<div class="card card-dashboard mb-3">
+			<div class="row g-0">
+				<div class="col-md-7">
+					<div class="card-body">
+						<h5 class="card-title">Total Candidates</h5>
+						<p class="card-text fw-bold fs-3 count-candidate">
+							{{countCandidate}}
+						</p>
+						<span class="card-text card-percent text-muted fs-12">
+							<span class="text-info">
+								<i class="far fa-arrow-alt-circle-down">
+								</i>
+								5%
+							</span>
+							Last month
+						</span>
+					</div>
+				</div>
+				<div class="col-md-5 d-flex align-items-center">
+					<img
+						src="/img/chart1.png"
+						alt="chart"
+						class="img-fluid rounded-start"
+					/>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
-			<canvas
-				id="saleschart"
-				class="h-8 w-9 chart-dropshadow chartjs-render-monitor"
-				width="192"
-				height="128"
-				style="display: block; height: 64px; width: 96px;"
-			></canvas>
+	</div>
+	<div class="col-md-3">
+		<div class="card card-dashboard mb-3">
+			<div class="row g-0">
+				<div class="col-md-7">
+					<div class="card-body">
+						<h5 class="card-title">Total Employers</h5>
+						<p class="card-text fw-bold fs-3">
+							{{countEmployer}}
+						</p>
+						<span class="card-text card-percent text-muted fs-12">
+							<span class="text-info">
+								<i class="far fa-arrow-alt-circle-down">
+								</i>
+								5%
+							</span>
+							Last week
+						</span>
+					</div>
+				</div>
+				<div class="col-md-5 d-flex align-items-center">
+					<img
+						src="/img/chart2.png"
+						alt="chart"
+						class="img-fluid rounded-start"
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="card card-dashboard mb-3">
+			<div class="row g-0">
+				<div class="col-md-7">
+					<div class="card-body">
+						<h5 class="card-title">Total Jobs</h5>
+						<p class="card-text fw-bold fs-3">
+							{{countJob}}
+						</p>
+						<span class="card-text card-percent text-muted fs-12">
+							<span class="text-info">
+								<i class="far fa-arrow-alt-circle-down">
+								</i>
+								5%
+							</span>
+							Last week
+						</span>
+					</div>
+				</div>
+				<div class="col-md-5 d-flex align-items-center">
+					<img
+						src="/img/chart3.png"
+						alt="chart"
+						class="img-fluid rounded-start"
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="card card-dashboard mb-3">
+			<div class="row g-0">
+				<div class="col-md-7">
+					<div class="card-body">
+						<h5 class="card-title">Total Companies</h5>
+						<p class="card-text fw-bold fs-3">
+							{{countJob}}
+						</p>
+						<span class="card-text card-percent text-muted fs-12">
+							<span class="text-info">
+								<i class="far fa-arrow-alt-circle-down">
+								</i>
+								5%
+							</span>
+							Last week
+						</span>
+					</div>
+				</div>
+				<div class="col-md-5 d-flex align-items-center">
+					<img
+						src="/img/chart2.png"
+						alt="chart"
+						class="img-fluid rounded-start"
+					/>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-<div
-	class="col-sm-12 col-md-10 col-xl-8 mb-4"
-	data-chart="bar"
-	data-dataset-label="Traffic"
-	data-labels="['Monday', 'Tuesday' , 'Wednesday' , 'Thursday' , 'Friday' , 'Saturday' , 'Sunday ']"
-	data-dataset-data="[2112, 2343, 2545, 3423, 2365, 1985, 987]"
-></div>
+<div class="row">
+	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-9 mb-5">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title fs-5 fw-bold">
+					Users Analytics
+				</h3>
+			</div>
+			<div class="card-body">
+				<div id="curve_chart"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-3 mb-5">
+		<div class="card">
+			{{! <div class="card-header">
+				<h3 class="card-title fs-5 fw-bold">
+					Users Analytics
+				</h3>
+			</div> }}
+			<div class="card-body mb-0 pb-0">
+				<div id="columnchart_material" style="height: 400px;"></div>
+			</div>
+			<div class="card-footer p-0">
+				<h3 class="card-title fs-5 fw-bold">
+					Users Analytics
+				</h3>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
-
-// const hostname = "127.0.0.1";
-// const port = 3000;
-const username = "haruta-job_1";
-const password = "LPOXvK1idBRQxpt3";
-
-const url = `mongodb+srv://${username}:${password}@atlascluster.akqikjq.mongodb.net/job_recruitment?retryWrites=true&w=majority`;
+const dotenv = require("dotenv");
+// Secret
+dotenv.config();
 async function connect() {
 	try {
+		const url = process.env.MONGODB_URI;
+
 		await mongoose.connect(url, {});
+		// mongoose.set("useNewUrlParser", true);
+		// mongoose.set("useFindAndModify", false);
+		// mongoose.set("useCreateIndex", true);
 		console.log("connect successfully");
 	} catch (error) {
-		console.log("error connecting");
+		console.log(error);
 	}
 }
 

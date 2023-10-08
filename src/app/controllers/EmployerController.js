@@ -4,52 +4,21 @@ const { handleErrors } = require("../../middleware/errors");
 const { createToken } = require("../../middleware/token");
 
 const Candidate = require("../models/Candidate");
+const Employer = require("../models/Employer");
 const User = require("../models/User");
 const Role = require("../models/Role");
 const UserRole = require("../models/UserRole");
 
-const dotenv = require("dotenv");
-// Secret
-dotenv.config();
-
 const maxAge = 3 * 24 * 60 * 60;
-const pageSize = Number(process.env.PAGE_SIZE);
 
-class CandidateController {
+class EmployerController {
 	// [GET] /candidates/
 	async show(req, res, next) {
 		try {
-			const roleId = await Role.findOne({ name: "candidate" }).distinct("_id");
-			const userRole = await UserRole.find({
-				role_id: roleId,
-			}).distinct("user_id");
-			var page = req.query.page;
-			if (page) {
-				page = parseInt(page);
-				if (page < 1) {
-					page = 1;
-				}
-				var skip = (page - 1) * pageSize;
-				const users = await User.find()
-					.where("_id")
-					.in(userRole)
-					.skip(skip)
-					.limit(pageSize)
-					.lean();
-				let total = await User.find().where("_id").in(userRole);
-				total = total.length;
-				let totalPage = Math.ceil(total.length / 8);
-				res.status(200).json({
-					total: total,
-					totalPage: totalPage,
-					data: users,
-				});
-			} else {
-				const users = await User.find().where("_id").in(userRole).lean();
-				res.status(200).json({ data: users });
-			}
+			const employers = await Employer.distinct("user_id").lean();
+			const users = await User.find().where("_id").in(employers);
+			res.status(200).json(users);
 		} catch (error) {
-			console.log(error);
 			res.status(404).json("Not Found");
 		}
 	}
@@ -99,7 +68,7 @@ class CandidateController {
 	}
 
 	// [PUT] /candidates/:candidateId
-	async updateById(req, res, next) {
+	async update(req, res, next) {
 		try {
 			const data = req.body;
 			const userId = req.params.userId;
@@ -115,7 +84,8 @@ class CandidateController {
 		try {
 			const userId = req.params.userId;
 			console.log(userId);
-			// await UserRole.deleteOne({ user_id: userId });
+			await Candidate.deleteOne({ user_id: userId });
+			await UserRole.deleteOne({ user_id: userId });
 			await User.deleteOne({ _id: userId });
 			res.status(200).json("Delete successful");
 		} catch (error) {
@@ -140,9 +110,10 @@ class CandidateController {
 				day_of_birth,
 				phone,
 			});
-			const role = await Role.findOne({ name: "candidate" });
+			const role = await Role.findOne({ name: "employer" });
 			await UserRole.create({ role_id: role.id, user_id: user._id });
 			res.status(201).json({ user: user._id });
+			res.status(200).json("oke");
 		} catch (err) {
 			console.log(err);
 			const errors = handleErrors(err);
@@ -150,23 +121,14 @@ class CandidateController {
 		}
 	}
 
-	async countCandidateInCurrentMonth(req, res, next) {
+	async countEmployer(req, res, next) {
 		try {
-			const roleId = await Role.findOne({ name: "candidate" }).distinct("_id");
+			const roleId = await Role.findOne({ name: "employer" }).distinct("_id");
 			const users = await UserRole.find({
 				role_id: roleId,
 			}).distinct("user_id");
-			const count = await User.count()
-				.where("createdAt")
-				.gte(moment().set("date", 1))
-				.lt(
-					moment()
-						.set("month", moment().get("month") + 1)
-						.set("date", 0)
-				)
-				.in("_id", users)
-				.lean();
-			res.locals.countCandidateInCurrentMonth = count;
+			const count = await User.count().in("_id", users).lean();
+			res.locals.countEmployer = count;
 			next();
 		} catch (error) {
 			console.log(error);
@@ -174,32 +136,16 @@ class CandidateController {
 		}
 	}
 
-	async countCandidate(req, res, next) {
+	async countEmployerMonthly(req, res, next) {
 		try {
-			const roleId = await Role.findOne({ name: "candidate" }).distinct("_id");
+			const roleId = await Role.findOne({ name: "employer" }).distinct("_id");
 			const users = await UserRole.find({
 				role_id: roleId,
 			}).distinct("user_id");
 			const count = await User.count().in("_id", users).lean();
-			res.locals.countCandidate = count;
-			res.status(200).json(count);
-			console.log(count);
-		} catch (error) {
-			console.log(error);
-			res.status(500).json("Server error");
-		}
-	}
-
-	async countCandidateMonthly(req, res, next) {
-		try {
-			const roleId = await Role.findOne({ name: "candidate" }).distinct("_id");
-			const users = await UserRole.find({
-				role_id: roleId,
-			}).distinct("user_id");
-			const count = await User.count().in("_id", users).lean();
-			const cdds = [];
+			const epls = [];
 			for (let i = 0; i < 12; i++) {
-				cdds.push(
+				epls.push(
 					await User.count()
 						.where("createdAt")
 						.gte(moment().set("month", i).set("date", 1))
@@ -212,8 +158,8 @@ class CandidateController {
 						.lean()
 				);
 			}
-			res.status(200).json(cdds);
-			console.log(cdds);
+			res.status(200).json(epls);
+			console.log(epls);
 			next();
 		} catch (error) {
 			console.log(error);
@@ -222,4 +168,4 @@ class CandidateController {
 	}
 }
 
-module.exports = new CandidateController();
+module.exports = new EmployerController();

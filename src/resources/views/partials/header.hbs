@@ -44,9 +44,6 @@
 
 		<!-- Right elements -->
 		<div class="d-flex align-items-center">
-			<div class="text-bg-danger">
-				{{isEmployer}}abc
-			</div>
 
 			<!-- Notifications -->
 			<div class="dropdown">
@@ -78,8 +75,6 @@
 			</div>
 			<!-- Avatar -->
 			<div class="dropdown">
-				<div class="text-bg-info">
-				</div>
 				<a
 					class="dropdown-toggle d-flex align-items-center hidden-arrow"
 					href="#"
@@ -92,7 +87,7 @@
 						src={{user.avatar}}
 						class="rounded-circle shadow-2-strong"
 						height="25"
-						alt="Black and White Portrait of a Man"
+						alt="avatar"
 						loading="lazy"
 					/>
 				</a>
@@ -140,35 +135,35 @@
 		</li>
 		<li class="sidenav-item">
 			<a class="sidenav-link">
-				<i class="fas fa-grin pr-3"></i><span class="pr-3">Users</span>
+				<i class="fa-solid fa-users pr-3"></i><span class="pr-3">Users</span>
 			</a>
 			<ul class="sidenav-collapse">
 				<li class="sidenav-item">
-					<a href="/candidate" class="sidenav-link">
+					<a href="/cdd" class="sidenav-link">
 						Candidates
 					</a>
 				</li>
 				<li class="sidenav-item">
-					<a href="/employer" class="sidenav-link">
+					<a href="/empl" class="sidenav-link">
 						Employers
 					</a>
 				</li>
 			</ul>
 		</li>
 		<li class="sidenav-item">
-			<a class="sidenav-link">
-				<i class="fas fa-grin pr-3"></i><span class="pr-3">Category 1</span>
+			<a class="sidenav-link" href="/empl">
+				<i class="fas fa-grin pr-3"></i><span class="pr-3">Companies</span>
 			</a>
-			<ul class="sidenav-collapse">
-				<li class="sidenav-item">
-					<a class="sidenav-link">
-						Link 2
-					</a>
-				</li>
-				<li class="sidenav-item">
-					<a class="sidenav-link">Link 3</a>
-				</li>
-			</ul>
+		</li>
+		<li class="sidenav-item">
+			<a class="sidenav-link" href="/empl">
+				<i class="fas fa-grin pr-3"></i><span class="pr-3">Jobs</span>
+			</a>
+		</li>
+		<li class="sidenav-item">
+			<a class="sidenav-link" href="/empl">
+				<i class="fas fa-grin pr-3"></i><span class="pr-3">Applies</span>
+			</a>
 		</li>
 	</ul>
 </div>

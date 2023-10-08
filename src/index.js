@@ -4,11 +4,12 @@ const express = require("express");
 const morgan = require("morgan");
 const handlebars = require("express-handlebars");
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
+const moment = require("moment");
 
 const route = require("./routes");
 const db = require("./config/db");
 
+const dotenv = require("dotenv");
 // Secret
 dotenv.config();
 
@@ -17,10 +18,10 @@ db.connect();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const server = http.createServer(app);
 
 // middleware
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../node_modules/moment/min")));
 app.use(
 	express.urlencoded({
 		extended: true,
@@ -39,10 +40,10 @@ app.engine(
 		extname: ".hbs",
 		helpers: {
 			sum: (...a) => [...a].reduce((total, num) => total + (+num || 0)),
+			dateFormat: (a) => moment(a).format("DD/MM/YYYY"),
 		},
 	})
 );
-
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views"));
 

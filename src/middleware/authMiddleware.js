@@ -1,5 +1,11 @@
 const jwt = require("jsonwebtoken");
 const User = require("../app/models/User");
+const Candidate = require("../app/models/Candidate");
+const Employer = require("../app/models/Employer");
+const UserRole = require("../app/models/UserRole");
+const Role = require("../app/models/Role");
+
+const { handleErrors } = require("./errors");
 
 const requireAuth = (req, res, next) => {
 	const token = req.cookies.jwt;
@@ -8,15 +14,15 @@ const requireAuth = (req, res, next) => {
 	if (token) {
 		jwt.verify(token, "net ninja secret", (err, decodedToken) => {
 			if (err) {
-				console.log(err.message);
-				res.redirect("/auth/login");
+				res.locals.user = null;
+				res.redirect("auth/login");
 			} else {
-				console.log(decodedToken);
 				next();
 			}
 		});
 	} else {
-		res.redirect("/auth/login");
+		res.locals.user = null;
+		res.redirect("auth/login");
 	}
 };
 
@@ -26,18 +32,11 @@ const checkUser = (req, res, next) => {
 	if (token) {
 		jwt.verify(token, "net ninja secret", async (err, decodedToken) => {
 			if (err) {
-				console.log(err.message);
 				res.locals.user = null;
 				next();
 			} else {
-				// console.log(decodedToken);
 				let user = await User.findById(decodedToken.id).lean();
 				res.locals.user = user;
-				res.cookie("isEmployer", true, {
-					maxAge: 1000 * 60 * 60 * 24,
-					httpOnly: true,
-				});
-				// console.log("tao da tao user roi: " + res.locals.user.first_name);
 				next();
 			}
 		});
@@ -47,4 +46,105 @@ const checkUser = (req, res, next) => {
 	}
 };
 
-module.exports = { requireAuth, checkUser };
+// check candidate
+const checkCandidate = (req, res, next) => {
+	const token = req.cookies.jwt;
+	if (token) {
+		jwt.verify(token, "net ninja secret", async (err, decodedToken) => {
+			if (err) {
+				console.log(err.message);
+				res.status(500).json("Invalid token");
+			} else {
+				const user = await User.findById(decodedToken.id).lean();
+				const userRole = await UserRole.findOne({ user_id: user._id }).lean();
+				const role = await Role.findById(userRole.role_id).lean();
+				if (role.name === "candidate") {
+					res.locals.user = user;
+					next();
+				} else {
+					res.status(403).json("Not permission");
+				}
+			}
+		});
+	} else {
+		res.status(500).json("Token not found");
+	}
+};
+
+const checkEmployer = (req, res, next) => {
+	const token = req.cookies.jwt;
+	if (token) {
+		jwt.verify(token, "net ninja secret", async (err, decodedToken) => {
+			if (err) {
+				console.log(err.message);
+				res.status(500).json("Invalid token");
+			} else {
+				let employer = await Employer.findById(decodedToken.id).lean();
+				if (employer) {
+					let user = await User.findById(employer.user_id).lean();
+					res.locals.user = user;
+					next();
+				} else {
+					res.status(403).json("Not permission");
+				}
+			}
+		});
+	} else {
+		res.status(500).json("Token not found");
+	}
+};
+
+const checkAdmin = (req, res, next) => {
+	const token = req.cookies.jwt;
+	if (token) {
+		jwt.verify(token, "net ninja secret", async (err, decodedToken) => {
+			if (err) {
+				console.log(err.message);
+				res.status(500).json("Invalid token");
+			} else {
+				const user = await User.findById(decodedToken.id).lean();
+				try {
+					const userRole = await UserRole.findOne({ user_id: user._id });
+					const role = await Role.findById(userRole.role_id);
+					if (role.name === "admin") {
+						res.locals.user = user;
+						next();
+					} else {
+						res.status(403).json("Not permission");
+					}
+				} catch (error) {
+					res.status(500).json("server error");
+				}
+			}
+		});
+	} else {
+		res.status(500).json("Token not found");
+	}
+};
+
+// check candidate
+const checkActive = async (req, res, next) => {
+	const { username, password } = req.body;
+	try {
+		const user = await User.login(username, password);
+		const active = user.active;
+		if (active) {
+			res.locals.user = user;
+			next();
+		} else {
+			res.status(401).send("Account is not activated.");
+		}
+	} catch (err) {
+		const errors = handleErrors(err);
+		res.status(400).json({ errors });
+	}
+};
+
+module.exports = {
+	requireAuth,
+	checkUser,
+	checkCandidate,
+	checkEmployer,
+	checkActive,
+	checkAdmin,
+};

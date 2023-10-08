@@ -1,4 +1,10 @@
 @import "variables";
+* {
+	font-family: "IBM Plex Sans", sans-serif;
+}
+body {
+	background-color: #f0f0f5;
+}
 .main {
 	padding-top: 74px;
 }
@@ -26,4 +32,46 @@
 	#intro {
 		margin-top: -58.59px;
 	}
+}
+
+.card-dashboard {
+	.card-title {
+		line-height: 15.4px;
+		font-family: "IBM Plex Sans", sans-serif;
+		font-size: 14px;
+	}
+	.card-percent {
+		font-size: 12px;
+		line-height: 18px;
+	}
+}
+
+#paging {
+	ul {
+		list-style: none;
+		display: flex;
+		justify-content: center;
+	}
+	.paginationjs-pages {
+		.paginationjs-page,
+		.paginationjs-next,
+		.paginationjs-prev,
+		.paginationjs-ellipsis {
+			width: 50px;
+			height: 25px;
+			line-height: 25px;
+			text-align: center;
+			cursor: pointer;
+		}
+		.active {
+			background: #8383fe;
+			border-radius: 20px;
+			color: #fff;
+		}
+	}
+}
+#table-candidate {
+	background: #fff;
+	border-radius: 10px;
+	padding: 10px;
 }

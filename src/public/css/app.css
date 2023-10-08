@@ -1,3 +1,9 @@
+* {
+  font-family: "IBM Plex Sans", sans-serif; }
+
+body {
+  background-color: #f0f0f5; }
+
 .main {
   padding-top: 74px; }
 
@@ -18,3 +24,37 @@
 @media (min-width: 992px) {
   #intro {
     margin-top: -58.59px; } }
+
+.card-dashboard .card-title {
+  line-height: 15.4px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 14px; }
+
+.card-dashboard .card-percent {
+  font-size: 12px;
+  line-height: 18px; }
+
+#paging ul {
+  list-style: none;
+  display: flex;
+  justify-content: center; }
+
+#paging .paginationjs-pages .paginationjs-page,
+#paging .paginationjs-pages .paginationjs-next,
+#paging .paginationjs-pages .paginationjs-prev,
+#paging .paginationjs-pages .paginationjs-ellipsis {
+  width: 50px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  cursor: pointer; }
+
+#paging .paginationjs-pages .active {
+  background: #8383fe;
+  border-radius: 20px;
+  color: #fff; }
+
+#table-candidate {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px; }

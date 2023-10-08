@@ -7,7 +7,7 @@ const SkillCandidate = new Schema({
 		ref: "Skill",
 		required: true,
 	},
-	candidate_id: {
+	user_id: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Candidate",
 		required: true,
