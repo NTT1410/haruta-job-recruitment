@@ -91,9 +91,7 @@ class UserRoleController {
 	async countJob(req, res, next) {
 		try {
 			const count = await Job.countDocuments().lean();
-			res.locals.countJob = count;
-			console.log(res.locals.countJob);
-			next();
+			res.status(200).json(count);
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Server error");

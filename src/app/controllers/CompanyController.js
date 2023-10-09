@@ -20,6 +20,16 @@ class CompanyController {
 			res.status(500).json(error);
 		}
 	}
+
+	async count(req, res, next) {
+		try {
+			const count = await Company.countDocuments().lean();
+			res.status(200).json(count);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
 }
 
 module.exports = new CompanyController();

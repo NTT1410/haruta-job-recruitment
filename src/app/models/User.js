@@ -20,7 +20,7 @@ const User = new Schema(
 		},
 		phone: {
 			type: String,
-			// required: [true, "Please enter an phone number"],
+			required: [true, "Please enter an phone number"],
 			validate: {
 				validator: (value) => {
 					const phoneRegex = /^\d{10}$/;
@@ -28,6 +28,7 @@ const User = new Schema(
 				},
 				message: "Phone number must be 10 digits",
 			},
+			unique: true,
 		},
 		username: {
 			type: String,
@@ -52,20 +53,6 @@ const User = new Schema(
 		},
 		day_of_birth: {
 			type: Date,
-			required: true,
-			validate: {
-				validator: (dayOfBirth) => {
-					const currentYear = new Date().getFullYear();
-
-					const age = currentYear - dayOfBirth.getFullYear();
-
-					if (age < 18) {
-						return false;
-					}
-					return true;
-				},
-				message: "tuổi phải lớn hơn 18",
-			},
 		},
 		country: {
 			type: String,

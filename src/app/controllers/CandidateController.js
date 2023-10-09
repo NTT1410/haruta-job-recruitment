@@ -126,7 +126,10 @@ class CandidateController {
 
 	// [POST] /candidates/
 	async create(req, res, next) {
-		const day_of_birth = moment(req.body.day_of_birth, "DD-MM-YYYY");
+		const day_of_birth = null;
+		if (day_of_birth) {
+			day_of_birth = moment(req.body.day_of_birth, "DD-MM-YYYY");
+		}
 		const { avatar, username, password, first_name, last_name, email, phone } =
 			req.body;
 		try {
