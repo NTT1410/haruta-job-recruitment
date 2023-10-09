@@ -19,6 +19,10 @@ class SiteController {
 		res.render("employer");
 	}
 
+	company(req, res, next) {
+		res.render("company");
+	}
+
 	async candidateDetails(req, res, next) {
 		const id = req.params.userId;
 		try {

@@ -1,5 +1,11 @@
 const sidenav = document.getElementById("sidenav-1");
 const sidenavInstance = mdb.Sidenav.getInstance(sidenav);
+const tableC = $("#table-candidate");
+const tableE = $("#table-employer");
+const tableCompany = $("#table-company");
+const pathC = "/candidates";
+const pathE = "/employers";
+const pathCompany = "/companies";
 
 const formSignup = document.querySelector(".form-signup");
 const usernameError = document.querySelector(".username.error");
@@ -195,6 +201,44 @@ const templatesTable = () => {
 	table.prepend(thead);
 	return table;
 };
+const templatesTableCompany = () => {
+	const table = $("<table></table>");
+	table.attr("id", "example");
+	table.attr("class", "display");
+	table.attr("width", "100%");
+	// Tạo một phần `<thead>` mới
+	const thead = $("<thead></thead>");
+
+	// Tạo một hàng mới cho phần `<thead>`
+	const row = $("<tr></tr>");
+
+	// Tạo ba cột mới cho hàng
+	const nameCell = $("<th></th>");
+	const phoneCell = $("<th></th>");
+	const establishmentCell = $("<th></th>");
+	const authCell = $("<th></th>");
+	const statusCell = $("<th></th>");
+
+	// Thiết lập nội dung của các cột
+	nameCell.text("Name");
+	phoneCell.text("Phone");
+	establishmentCell.text("Establishment Date");
+	authCell.text("Auth");
+	statusCell.text("Status");
+
+	// Thêm các cột vào hàng
+	row.append(nameCell);
+	row.append(phoneCell);
+	row.append(establishmentCell);
+	row.append(authCell);
+	row.append(statusCell);
+
+	// Thêm hàng vào phần `<thead>`
+	thead.append(row);
+	// Thêm phần `<thead>` vào bảng
+	table.prepend(thead);
+	return table;
+};
 function fullName(data) {
 	const img =
 		"<img src=" +
@@ -221,14 +265,9 @@ function activeTemplate(data) {
 }
 // ---------------- TEMPLATES --------------------------------
 
-// ------------ Load Table --------------------------------
-var idCandidate = null;
-const loadTable = (page, path) => {
-	Object.assign(DataTable.defaults, {
-		info: false,
-		paging: false,
-	});
-	const table = new DataTable("#example", {
+// --------- TABLES --------------------------------
+const tableUsers = (page, path) => {
+	return new DataTable("#example", {
 		ajax: {
 			type: "GET",
 			url: "/admin" + path + "?page=" + page,
@@ -259,6 +298,54 @@ const loadTable = (page, path) => {
 			},
 		],
 	});
+};
+const tableCompanies = (page, path) => {
+	return new DataTable("#example", {
+		ajax: {
+			type: "GET",
+			url: "/admin" + path + "?page=" + page,
+		},
+		columns: [
+			{ data: "name" },
+			{
+				data: "phone",
+			},
+			{
+				data: "establishment_date",
+				render: function (data, type) {
+					return moment(data).format("DD-MM-YYYY");
+				},
+			},
+			{
+				data: "auth",
+				render: function (data, type) {
+					return activeTemplate(data);
+				},
+			},
+			{
+				data: "status",
+				render: function (data, type) {
+					return activeTemplate(data);
+				},
+			},
+		],
+	});
+};
+// --------- TABLES --------------------------------
+
+// ------------ Load Table --------------------------------
+var idCandidate = null;
+const loadTable = (page, path) => {
+	Object.assign(DataTable.defaults, {
+		info: false,
+		paging: false,
+	});
+	let table = null;
+	if (tableC.length > 0 || tableE.length > 0) {
+		table = tableUsers(page, path);
+	} else if (tableCompany.length > 0) {
+		table = tableCompanies(page, path);
+	}
 	table.on("click", "tbody tr", (e) => {
 		let classList = e.currentTarget.classList;
 		let tr = e.target.closest("tr");
@@ -277,8 +364,6 @@ const loadTable = (page, path) => {
 		console.log(idCandidate);
 	});
 	document.querySelector("#button-edit").addEventListener("click", function () {
-		const tableC = $("#table-candidate");
-		const tableE = $("#table-employer");
 		if (tableC.length > 0) {
 			if (idCandidate) {
 				window.location.href = "/cdd/" + idCandidate;
@@ -287,6 +372,10 @@ const loadTable = (page, path) => {
 			if (idCandidate) {
 				window.location.href = "/empl/" + idCandidate;
 			}
+		} else if (tableCompany.length > 0) {
+			if (idCandidate) {
+				window.location.href = "/cpn/" + idCandidate;
+			}
 		}
 	});
 	document
@@ -294,7 +383,12 @@ const loadTable = (page, path) => {
 		.addEventListener("click", function () {
 			if (idCandidate && table.row(".selected").length > 0) {
 				table.row(".selected").remove().draw(false);
-				deleteUser(idCandidate);
+				if (tableC.length > 0 || tableE.length > 0) {
+					deleteUser(idCandidate);
+				} else if (tableCompany.length > 0) {
+					deleteCompany(idCandidate);
+				}
+
 				idCandidate = null;
 			}
 		});
@@ -313,8 +407,11 @@ const paging = (path, table) => {
 		pageSize: 8,
 		afterPageOnClick: function (evt, page) {
 			$("#example_wrapper").remove();
-			console.log(templatesTable());
-			table.append(templatesTable());
+			if (tableC.length > 0 || tableE.length > 0) {
+				table.append(templatesTable());
+			} else if (tableCompany.length > 0) {
+				table.append(templatesTableCompany());
+			}
 			loadTable(page, path);
 		},
 	});
@@ -322,11 +419,6 @@ const paging = (path, table) => {
 // ------------- PAGING TABLE --------------------------------
 
 const createTable = () => {
-	const tableC = $("#table-candidate");
-	const tableE = $("#table-employer");
-	const tableCompany = $("#table-company");
-	const pathC = "/candidates";
-	const pathE = "/employers";
 	if (tableC.length > 0) {
 		console.log("c");
 		loadTable(1, pathC);
@@ -335,6 +427,10 @@ const createTable = () => {
 		console.log(pathE);
 		loadTable(1, pathE);
 		paging(pathE, tableE);
+	} else if (tableCompany.length > 0) {
+		console.log(pathCompany);
+		loadTable(1, pathCompany);
+		paging(pathCompany, tableCompany);
 	}
 };
 createTable();
@@ -353,15 +449,14 @@ const deleteRow = (id, path) => {
 };
 
 const deleteUser = (id) => {
-	const tableC = $("#table-candidate");
-	const tableE = $("#table-employer");
-	const pathC = "/candidates";
-	const pathE = "/employers";
 	if (tableC.length > 0) {
 		deleteRow(id, pathC);
 	} else if (tableE.length > 0) {
 		deleteRow(id, pathE);
 	}
+};
+const deleteCompany = (id) => {
+	deleteRow(id, pathCompany);
 };
 
 function update(path) {
@@ -382,8 +477,6 @@ function update(path) {
 function updateUser() {
 	const updateC = $("#update-candidate");
 	const updateE = $("#update-employer");
-	const pathC = "/candidates";
-	const pathE = "/employers";
 	if (updateC.length > 0) {
 		update(pathC);
 	} else if (updateE.length > 0) {

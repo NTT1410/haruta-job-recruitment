@@ -13,6 +13,7 @@ router.get("/:companyId", companyController.detail);
 router.put("/", companyController.show);
 
 // admin
-router.delete("/", companyController.show);
+// router.delete("/:companyId", (req, res) => res.json(req.params.companyId));
+router.delete("/:companyId", companyController.deleteById);
 
 module.exports = router;
