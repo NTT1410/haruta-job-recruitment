@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const handlebars = require("express-handlebars");
 const cookieParser = require("cookie-parser");
 const moment = require("moment");
+const cors = require("cors");
 
 const route = require("./routes");
 const db = require("./config/db");
@@ -29,6 +30,14 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
+
+// CORS
+app.use(function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods", "GET, POST, POST, DELETE");
+	res.header("Access-Control-Allow-Headers", "Content-Type");
+});
 
 //http logger
 app.use(morgan("combined"));
