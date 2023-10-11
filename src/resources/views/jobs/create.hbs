@@ -1,0 +1,82 @@
+<div class="row">
+	<h3 class="text-muted fw-bold fs-5 pb-4">
+
+		Create Candidate
+	</h3>
+</div>
+
+<div class="row g-0" id="create-employer">
+	<div class="card p-3">
+
+		<div class="row">
+			<div class="col">
+				<!-- Name input -->
+				<div class="form-outline">
+					<input type="text" id="first_name" class="form-control" required />
+					<label class="form-label" for="first_name">First_name</label>
+				</div>
+			</div>
+			<div class="col">
+				<!-- Email input -->
+				<div class="form-outline">
+					<input type="text" id="last_name" class="form-control" required />
+					<label class="form-label" for="last_name">Last_name</label>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col">
+				<!-- Name input -->
+				<div class="form-outline">
+					<input type="email" id="email" class="form-control" required />
+					<label class="form-label" for="email">Email address</label>
+				</div>
+			</div>
+			<div class="col">
+				<!-- Email input -->
+				<div class="form-outline">
+					<input type="text" id="phone" class="form-control" />
+					<label class="form-label" for="phone">Phone number</label>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col">
+				<!-- Name input -->
+				<div class="form-outline">
+					<input type="text" id="username" class="form-control" required />
+					<label class="form-label" for="username">Username</label>
+				</div>
+			</div>
+			<div class="col">
+				<!-- Email input -->
+				<div class="form-outline">
+					<input type="password" id="password" class="form-control" required />
+					<label class="form-label" for="password">Password</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="row mt-3 justify-content-end">
+			<div class="col-1">
+				<div class="">
+					<button
+						class="btn btn-primary btn-rounded mb-4"
+						id="cancel"
+						onclick="history.back()"
+					>Cancel</button>
+				</div>
+			</div>
+			<div class="col-1">
+				<div class="">
+					<button
+						onclick="createUser()"
+						class="btn btn-success btn-rounded btn-block mb-4"
+					>Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

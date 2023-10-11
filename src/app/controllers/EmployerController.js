@@ -99,7 +99,7 @@ class EmployerController {
 	}
 
 	// [PUT] /candidates/:candidateId
-	async update(req, res, next) {
+	async updateById(req, res, next) {
 		try {
 			const data = req.body;
 			const userId = req.params.userId;

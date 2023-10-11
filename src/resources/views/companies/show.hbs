@@ -2,7 +2,7 @@
 	<div class="row g-0">
 		<div class="col-md-1 justify-content-center d-flex align-items-center">
 			<img
-				src={{user.avatar}}
+				src="{{user.avatar}}"
 				class="rounded-circle shadow-2-strong"
 				height="75"
 				alt="Black and White Portrait of a Man"
@@ -11,9 +11,20 @@
 		</div>
 		<div class="col-md-10">
 			<div class="card-body">
-				<h5 class="card-title">{{user.first_name}} {{user.last_name}}</h5>
+				<h5 class="card-title fw-bold text-uppercase">{{company.name}}</h5>
+				<div class="d-flex">
+					<p class="card-text">
+						<i class="fas fa-globe"></i>
+						<small class="pl-2 text-muted">{{company.website}}</small>
+					</p>
+					<p class="ml-5 card-text">
+						<i class="far fa-building"></i>
+						<small class="pl-2 text-muted">101 employees</small>
+					</p>
+				</div>
 				<p class="card-text">
-					<small class="text-muted">Last updated 3 mins ago</small>
+					<i class="fas fa-user-plus"></i>
+					<small class="pl-2 text-muted">10 followers</small>
 				</p>
 			</div>
 		</div>
@@ -30,11 +41,11 @@
 						type="text"
 						id="id"
 						class="form-control"
-						value={{user._id}}
+						value="{{company._id}}"
 						readonly
 						disabled
 					/>
-					<label class="form-label" for="id">User ID</label>
+					<label class="form-label" for="id">Company ID</label>
 				</div>
 			</div>
 		</div>
@@ -45,38 +56,11 @@
 				<div class="form-outline">
 					<input
 						type="text"
-						id="first_name"
+						id="name"
 						class="form-control"
-						value="{{user.first_name}}"
+						value="{{company.name}}"
 					/>
-					<label class="form-label" for="first_name">First_name</label>
-				</div>
-			</div>
-			<div class="col">
-				<!-- Email input -->
-				<div class="form-outline">
-					<input
-						type="text"
-						id="last_name"
-						class="form-control"
-						value="{{user.last_name}}
-					/>"
-					<label class="form-label" for="last_name">Last_name</label>
-				</div>
-			</div>
-		</div>
-		<hr />
-		<div class="row">
-			<div class="col">
-				<!-- Name input -->
-				<div class="form-outline">
-					<input
-						type="email"
-						id="email"
-						class="form-control"
-						value={{user.email}}
-					/>
-					<label class="form-label" for="email">Email address</label>
+					<label class="form-label" for="name">Company Name</label>
 				</div>
 			</div>
 			<div class="col">
@@ -86,9 +70,9 @@
 						type="text"
 						id="phone"
 						class="form-control"
-						value={{user.phone}}
+						value="{{company.phone}}"
 					/>
-					<label class="form-label" for="phone">Phone number</label>
+					<label class="form-label" for="phone">Phone Number</label>
 				</div>
 			</div>
 		</div>
@@ -99,31 +83,43 @@
 				<div class="form-outline">
 					<input
 						type="text"
-						id="username"
+						id="website"
 						class="form-control"
-						value={{user.username}}
+						value="{{company.website}}"
 					/>
-					<label class="form-label" for="username">Username</label>
+					<label class="form-label" for="website">Website address</label>
 				</div>
 			</div>
 			<div class="col">
-				<!-- Email input -->
-				<div class="form-outline">
+				<div class="form-outline datepicker" data-mdb-inline="true">
 					<input
-						type="password"
-						id="password"
+						type="text"
 						class="form-control"
-						value={{user.password}}
+						id="establishment_date"
+						name="establishment_date"
+						value="{{{dateFormat company.establishment_date timeStamp}}}"
 					/>
-					<label class="form-label" for="password">Password</label>
+					<label for="establishment_date" class="form-label">Establishment Date</label>
 				</div>
 			</div>
 		</div>
 		<hr />
 		<div class="row">
 			<div class="col">
-				<select class="select" id="active" name="active">
-					{{#if user.active}}
+				<select class="select" id="auth" name="auth">
+					{{#if company.auth}}
+						<option value="true" selected>Has been authenticated</option>
+						<option value="false">Not yet authenticated</option>
+					{{else}}
+						<option value="true">Has been authenticated</option>
+						<option value="false" selected>Not yet authenticated</option>
+					{{/if}}
+				</select>
+				<label for="auth" class="form-label select-label">Authentication</label>
+			</div>
+			<div class="col">
+				<select class="select" id="status" name="status">
+					{{#if company.status}}
 						<option value="true" selected>Active</option>
 						<option value="false">Inactive</option>
 					{{else}}
@@ -131,20 +127,7 @@
 						<option value="false" selected>Inactive</option>
 					{{/if}}
 				</select>
-				<label for="active" class="form-label select-label">Status</label>
-			</div>
-			<div class="col">
-				<div class="form-outline datepicker" data-mdb-inline="true">
-					<input
-						type="text"
-						class="form-control"
-						id="day_of_birth"
-						name="day_of_birth"
-						{{!-- value={{user.day_of_birth}} --}}
-						value={{{dateFormat user.day_of_birth timeStamp}}}
-					/>
-					<label for="day_of_birth" class="form-label">Day Of Birth</label>
-				</div>
+				<label for="status" class="form-label select-label">Status</label>
 			</div>
 		</div>
 		<div class="row mt-3 justify-content-end">
@@ -160,9 +143,9 @@
 			<div class="col-1">
 				<div class="">
 					<button
-						onclick="updateUser()"
+						onclick="updateCompany()"
 						class="btn btn-success btn-rounded btn-block mb-4"
-						id="update-employer"
+						id="update-company"
 					>Save</button>
 				</div>
 			</div>

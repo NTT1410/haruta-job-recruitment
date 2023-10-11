@@ -33,6 +33,11 @@ app.use(cookieParser());
 app.use(cors());
 
 // CORS
+app.use(
+	cors({
+		origin: "*",
+	})
+);
 app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Methods", "GET, POST, POST, DELETE");
@@ -51,6 +56,8 @@ app.engine(
 		helpers: {
 			sum: (...a) => [...a].reduce((total, num) => total + (+num || 0)),
 			dateFormat: (a) => moment(a).format("DD/MM/YYYY"),
+			compare: (a, b) => a.toString() === b.toString(),
+			toString: (a) => a.toString(),
 		},
 	})
 );

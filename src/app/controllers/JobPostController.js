@@ -4,15 +4,39 @@ const Follow = require("../models/Follow");
 const Company = require("../models/Company");
 const Job = require("../models/Job");
 const Employer = require("../models/Employer");
+const dotenv = require("dotenv");
+// Secret
+dotenv.config();
 
-class UserRoleController {
+const pageSize = Number(process.env.PAGE_SIZE);
+
+class JobPostController {
 	// [GET] /api/follows
 	async show(req, res, next) {
+		// const
 		try {
-			const follows = await Job.find().lean();
-			res.status(200).json(follows);
+			var page = req.query.page;
+			if (page) {
+				page = parseInt(page);
+				if (page < 1) {
+					page = 1;
+				}
+				var skip = (page - 1) * pageSize;
+				const jobs = await Job.find().skip(skip).limit(pageSize).lean();
+				let total = await Job.countDocuments();
+				let totalPage = Math.ceil(total / 8);
+				res.status(200).json({
+					total: total,
+					totalPage: totalPage,
+					data: jobs,
+				});
+			} else {
+				const jobs = await Job.find().lean();
+				res.status(200).json({ data: jobs });
+			}
 		} catch (error) {
-			res.status(500).json("Server error");
+			console.log(error);
+			res.status(404).json("Not Found");
 		}
 	}
 
@@ -99,4 +123,4 @@ class UserRoleController {
 	}
 }
 
-module.exports = new UserRoleController();
+module.exports = new JobPostController();

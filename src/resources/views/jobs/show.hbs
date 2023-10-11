@@ -1,0 +1,228 @@
+<div class="card mb-3">
+	<div class="row g-0">
+		<div class="col-md-10">
+			<div class="card-body">
+				<h5 class="card-title fw-bold">{{job.name}}</h5>
+				<div class="d-flex mt-4">
+					<div class="d-flex">
+						<div class="d-flex align-items-center"><i
+								class="fa-solid fa-circle-dollar-to-slot fs-2"
+							></i></div>
+						<div class="col ps-3">
+							<div class="text-muted">Salary</div>
+							<div class="fw-bold">Over 10 million</div>
+						</div>
+					</div>
+					<div class="d-flex ms-5">
+						<div class="d-flex align-items-center"><i
+								class="fa-solid fa-circle-dollar-to-slot fs-2"
+							></i></div>
+						<div class="col ps-3">
+							<div class="text-muted">location</div>
+							<div class="d-flex">
+								{{#each job.location}}
+									<div class="fw-bold pe-1">{{this.city}} -</div>
+								{{/each}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class="row g-0">
+	<div class="card p-3">
+		<div class="row mt-3">
+			<div class="col">
+				<!-- Name input -->
+				<div class="form-outline">
+					<input
+						type="text"
+						id="id"
+						class="form-control"
+						value="{{job._id}}"
+						readonly
+						disabled
+					/>
+					<label class="form-label" for="id">Job ID</label>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col">
+				<!-- Name input -->
+				<div class="form-outline">
+					<input
+						type="text"
+						id="first_name"
+						class="form-control"
+						value="{{job.name}}"
+					/>
+					<label class="form-label" for="first_name">Job Name</label>
+				</div>
+			</div>
+			<div class="col">
+				<select class="select" id="company_id" name="company_id" data-mdb-filter="true">
+					{{#each companiesIdName}}
+						{{#if (compare this._id ../job.company_id)}}
+							<option value="{{this._id}}" selected>{{this.name}}</option>
+						{{else}}
+							<option value="{{this._id}}">{{this.name}}</option>	
+						{{/if}}
+					{{/each}}
+
+				</select>
+				<label for="active" class="form-label select-label">Company</label>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col">
+				<!-- Name input -->
+				<div class="form-outline">
+					<input
+						type="text"
+						id="position"
+						class="form-control"
+						value="{{toString job.position}}"
+						multiple="true"
+					/>
+					<label class="form-label" for="position">Position</label>
+				</div>
+			</div>
+			<div class="col">
+				<!-- Email input -->
+				<div class="form-outline">
+					<input
+						type="text"
+						id="experience"
+						class="form-control"
+						value="{{job.experience}}"
+					/>
+					<label class="form-label" for="experience">Experience</label>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col">
+				<!-- Name input -->
+				<div class="form-outline">
+					<input
+						type="text"
+						id="benefit"
+						class="form-control"
+						value="{{job.benefit}}"
+					/>
+					<label class="form-label" for="benefit">Benefit</label>
+				</div>
+			</div>
+			<div class="col">
+				<!-- Email input -->
+				<div class="form-outline">
+					<input
+						type="text"
+						id="type"
+						class="form-control"
+						value="{{job.type}}"
+					/>
+					<label class="form-label" for="type">Type</label>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col">
+				<!-- Name input -->
+				<div class="form-outline">
+					<input
+						type="number"
+						id="salary"
+						class="form-control"
+						value="{{job.salary}}"
+					/>
+					<label class="form-label" for="salary">Salary</label>
+				</div>
+			</div>
+			<div class="col">
+				<!-- Email input -->
+				<div class="form-outline">
+					<input
+						type="text"
+						id="description"
+						class="form-control"
+						value="{{job.description}}"
+					/>
+					<label class="form-label" for="description">Description</label>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col">
+				<div class="form-outline datepicker" data-mdb-inline="true">
+					<input
+						type="text"
+						class="form-control"
+						id="start_date"
+						name="start_date"
+						{{!-- value={{user.day_of_birth}} --}}
+						value="{{{dateFormat job.start_date timeStamp}}}"
+					/>
+					<label for="start_date" class="form-label">Start Date</label>
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-outline datepicker" data-mdb-inline="true">
+					<input
+						type="text"
+						class="form-control"
+						id="end_date"
+						name="end_date"
+						{{!-- value={{user.day_of_birth}} --}}
+						value="{{{dateFormat job.end_date timeStamp}}}"
+					/>
+					<label for="end_date" class="form-label">End Date</label>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col">
+				<select class="select" id="active" name="active">
+					{{#if job.active}}
+						<option value="true" selected>Active</option>
+						<option value="false">Inactive</option>
+					{{else}}
+						<option value="true">Active</option>
+						<option value="false" selected>Inactive</option>
+					{{/if}}
+				</select>
+				<label for="active" class="form-label select-label">Status</label>
+			</div>
+		</div>
+		<div class="row mt-3 justify-content-end">
+			<div class="col-1">
+				<div class="">
+					<button
+						class="btn btn-primary btn-rounded mb-4"
+						id="cancel"
+						onclick="history.back()"
+					>Cancel</button>
+				</div>
+			</div>
+			<div class="col-1">
+				<div class="">
+					<button
+						onclick="updateJob()"
+						class="btn btn-success btn-rounded btn-block mb-4"
+						id="update-employer"
+					>Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

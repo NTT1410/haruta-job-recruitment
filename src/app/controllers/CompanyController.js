@@ -39,6 +39,7 @@ class CompanyController {
 
 	// [GET] /api/companies/:companyId
 	async detail(req, res, next) {
+		console.log(res.locals.companiesIdName);
 		try {
 			const companyId = req.params.companyId;
 			const company = await Company.findById(companyId).lean();
@@ -67,6 +68,39 @@ class CompanyController {
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Delete failed");
+		}
+	}
+
+	async updateById(req, res, next) {
+		try {
+			const companyId = req.params.companyId;
+			const data = req.body;
+			await Company.updateOne({ _id: companyId }, data);
+			res.status(200).json("Update successful");
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Update failed");
+		}
+	}
+
+	async companiesNameAndId(req, res, next) {
+		try {
+			const companiesID = await Company.find().distinct("_id").lean();
+			const companiesName = await Company.find().distinct("name").lean();
+			console.log(companiesID);
+			var companies = [];
+			for (let i = 0; i < companiesID.length; i++) {
+				companies.push({
+					_id: companiesID[i],
+					name: companiesName[i],
+				});
+			}
+
+			res.locals.companiesIdName = companies;
+			next();
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
 		}
 	}
 }

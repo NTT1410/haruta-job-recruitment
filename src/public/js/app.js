@@ -3,9 +3,11 @@ const sidenavInstance = mdb.Sidenav.getInstance(sidenav);
 const tableC = $("#table-candidate");
 const tableE = $("#table-employer");
 const tableCompany = $("#table-company");
+const tableJob = $("#table-job");
 const pathC = "/candidates";
 const pathE = "/employers";
 const pathCompany = "/companies";
+const pathJob = "/job-post";
 
 const formSignup = document.querySelector(".form-signup");
 const usernameError = document.querySelector(".username.error");
@@ -201,6 +203,7 @@ const templatesTable = () => {
 	table.prepend(thead);
 	return table;
 };
+
 const templatesTableCompany = () => {
 	const table = $("<table></table>");
 	table.attr("id", "example");
@@ -239,6 +242,46 @@ const templatesTableCompany = () => {
 	table.prepend(thead);
 	return table;
 };
+
+const templatesTableJob = () => {
+	const table = $("<table></table>");
+	table.attr("id", "example");
+	table.attr("class", "display");
+	table.attr("width", "100%");
+	// Tạo một phần `<thead>` mới
+	const thead = $("<thead></thead>");
+
+	// Tạo một hàng mới cho phần `<thead>`
+	const row = $("<tr></tr>");
+
+	// Tạo ba cột mới cho hàng
+	const nameCell = $("<th></th>");
+	const companyCell = $("<th></th>");
+	const startDateCell = $("<th></th>");
+	const endDateCell = $("<th></th>");
+	const statusCell = $("<th></th>");
+
+	// Thiết lập nội dung của các cột
+	nameCell.text("Name");
+	companyCell.text("company");
+	startDateCell.text("Start Date");
+	endDateCell.text("End Date");
+	statusCell.text("Status");
+
+	// Thêm các cột vào hàng
+	row.append(nameCell);
+	row.append(companyCell);
+	row.append(startDateCell);
+	row.append(endDateCell);
+	row.append(statusCell);
+
+	// Thêm hàng vào phần `<thead>`
+	thead.append(row);
+	// Thêm phần `<thead>` vào bảng
+	table.prepend(thead);
+	return table;
+};
+
 function fullName(data) {
 	const img =
 		"<img src=" +
@@ -248,6 +291,7 @@ function fullName(data) {
 		'<div class="ms-3">' +
 		'<p class="fw-bold mb-1 td-fullname">' +
 		data.first_name +
+		" " +
 		data.last_name +
 		"</p>" +
 		'<p class=" mb-0">' +
@@ -331,6 +375,40 @@ const tableCompanies = (page, path) => {
 		],
 	});
 };
+const tableJobs = (page, path) => {
+	return new DataTable("#example", {
+		ajax: {
+			type: "GET",
+			url: "/admin" + path + "?page=" + page,
+		},
+		columns: [
+			{
+				data: "name",
+			},
+			{
+				data: "company_id",
+			},
+			{
+				data: "start_date",
+				render: function (data, type) {
+					return moment(data).format("DD-MM-YYYY");
+				},
+			},
+			{
+				data: "end_date",
+				render: function (data, type) {
+					return moment(data).format("DD-MM-YYYY");
+				},
+			},
+			{
+				data: "active",
+				render: function (data, type) {
+					return activeTemplate(data);
+				},
+			},
+		],
+	});
+};
 // --------- TABLES --------------------------------
 
 // ------------ Load Table --------------------------------
@@ -345,6 +423,9 @@ const loadTable = (page, path) => {
 		table = tableUsers(page, path);
 	} else if (tableCompany.length > 0) {
 		table = tableCompanies(page, path);
+	} else if (tableJob.length > 0) {
+		console.log(page, path);
+		table = tableJobs(page, path);
 	}
 	table.on("click", "tbody tr", (e) => {
 		let classList = e.currentTarget.classList;
@@ -376,6 +457,10 @@ const loadTable = (page, path) => {
 			if (idCandidate) {
 				window.location.href = "/cpn/" + idCandidate;
 			}
+		} else if (tableJob.length > 0) {
+			if (idCandidate) {
+				window.location.href = "/job/" + idCandidate;
+			}
 		}
 	});
 	document
@@ -387,6 +472,8 @@ const loadTable = (page, path) => {
 					deleteUser(idCandidate);
 				} else if (tableCompany.length > 0) {
 					deleteCompany(idCandidate);
+				} else if (tableJob.length > 0) {
+					deleteJob(idCandidate);
 				}
 
 				idCandidate = null;
@@ -398,6 +485,7 @@ const loadTable = (page, path) => {
 
 // ------------- PAGING TABLE --------------------------------
 const paging = (path, table) => {
+	console.log(path);
 	$("#paging").pagination({
 		dataSource: "/admin" + path + "?page=1",
 		locator: "data",
@@ -411,6 +499,8 @@ const paging = (path, table) => {
 				table.append(templatesTable());
 			} else if (tableCompany.length > 0) {
 				table.append(templatesTableCompany());
+			} else if (tableJob.length > 0) {
+				table.append(templatesTableJob());
 			}
 			loadTable(page, path);
 		},
@@ -420,17 +510,17 @@ const paging = (path, table) => {
 
 const createTable = () => {
 	if (tableC.length > 0) {
-		console.log("c");
 		loadTable(1, pathC);
 		paging(pathC, tableC);
 	} else if (tableE.length > 0) {
-		console.log(pathE);
 		loadTable(1, pathE);
 		paging(pathE, tableE);
 	} else if (tableCompany.length > 0) {
-		console.log(pathCompany);
 		loadTable(1, pathCompany);
 		paging(pathCompany, tableCompany);
+	} else if (tableJob.length > 0) {
+		loadTable(1, pathJob);
+		paging(pathJob, tableJob);
 	}
 };
 createTable();
@@ -458,10 +548,12 @@ const deleteUser = (id) => {
 const deleteCompany = (id) => {
 	deleteRow(id, pathCompany);
 };
+const deleteJob = (id) => {
+	deleteRow(id, pathJob);
+};
 
 function update(path) {
 	const id = $("#id").val();
-	console.log(path);
 	$.ajax({
 		url: "/api" + path + "/" + id,
 		type: "PUT",
@@ -483,6 +575,35 @@ function updateUser() {
 		update(pathE);
 	}
 }
+
+const updateCompany = () => {
+	const id = $("#id").val();
+	$.ajax({
+		url: "/api/companies/" + id,
+		type: "PUT",
+		data: {
+			name: $("#name").val(),
+		},
+	})
+		.then((data) => {
+			window.history.back();
+		})
+		.catch((err) => console.log(err));
+};
+const updateJob = () => {
+	const id = $("#id").val();
+	$.ajax({
+		url: "/api/job-post/" + id,
+		type: "PUT",
+		data: {
+			name: $("#name").val(),
+		},
+	})
+		.then((data) => {
+			window.history.back();
+		})
+		.catch((err) => console.log(err));
+};
 
 function create(data, path) {
 	$.ajax({

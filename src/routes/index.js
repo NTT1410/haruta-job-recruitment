@@ -10,9 +10,18 @@ const {
 	checkAdmin,
 } = require("../middleware/authMiddleware");
 const CandidateController = require("../app/controllers/CandidateController");
+const User = require("../app/models/User");
 
 function route(app) {
-	app.get("/test", (req, res) => res.json(req.query.t));
+	app.get("/test", async (req, res) => {
+		const conditions = {
+			first_name: { $regex: new RegExp("ad") },
+			phone: { $regex: new RegExp("2") },
+			gender: "Male",
+		};
+		const u = await User.find().where(conditions);
+		res.json(u);
+	});
 	app.use("*", checkUser);
 
 	// auth
@@ -21,13 +30,13 @@ function route(app) {
 	app.use("/*", requireAuth);
 
 	// admin checkAdmin
-	app.use("/admin", adminRouter);
+	app.use("/admin", checkAdmin, adminRouter);
 
 	// admin site
-	app.use("/", siteRouter);
+	app.use("/", checkAdmin, siteRouter);
 
 	// cookies
-	app.use("/cookies", cookies);
+	app.use("/cookies", checkAdmin, cookies);
 
 	// api
 	app.use("/api", apiRouter);

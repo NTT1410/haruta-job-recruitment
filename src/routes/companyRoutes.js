@@ -4,13 +4,15 @@ const router = express.Router();
 const companyController = require("../app/controllers/CompanyController");
 
 router.get("/count", companyController.count);
+router.get("/id-name", companyController.companiesNameAndId);
 
 // [GET, POST, PUT, DELETE]
 router.get("/", companyController.show);
 router.get("/:companyId", companyController.detail);
 
 // admin
-router.put("/", companyController.show);
+// router.put("/:companyId", (req, res) => res.send("oe"));
+router.put("/:companyId", companyController.updateById);
 
 // admin
 // router.delete("/:companyId", (req, res) => res.json(req.params.companyId));

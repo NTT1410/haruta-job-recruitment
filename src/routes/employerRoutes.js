@@ -14,6 +14,7 @@ router.get("/", checkAdmin, employerController.show);
 // [GET] /api/employers
 // check current user
 router.get("/", checkEmployer, employerController.detail); //success
+// router.put("/", checkEmployer, (req, res) => res.send("oke")); //success
 router.put("/", checkEmployer, employerController.update); //success
 router.delete("/", checkEmployer, employerController.delete); //success
 
@@ -27,7 +28,7 @@ router.post("/", employerController.create); //success
 // [GET] /api/employers/:userId
 //  check admin
 router.get("/:userId", checkAdmin, employerController.detail); //success
-router.put("/:userId", checkAdmin, employerController.detail); //success
+router.put("/:userId", checkAdmin, employerController.updateById); //success
 router.delete("/:userId", checkAdmin, employerController.deleteById); //success
 
 module.exports = router;

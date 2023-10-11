@@ -9,6 +9,7 @@ router.get("/login", SiteController.login);
 router.post("/login", authController.login);
 router.post("/login_c", authController.login_c);
 router.post("/login_e", authController.login_e);
-router.get("/logout", authController.logout_get);
+router.get("/logout", authController.logout);
+router.get("/logout_admin", authController.logout_get);
 
 module.exports = router;
