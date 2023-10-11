@@ -5,6 +5,7 @@ const Company = require("../models/Company");
 const Job = require("../models/Job");
 const Employer = require("../models/Employer");
 const dotenv = require("dotenv");
+const Apply = require("../models/Apply");
 // Secret
 dotenv.config();
 
@@ -118,6 +119,18 @@ class JobPostController {
 			res.status(200).json(count);
 		} catch (error) {
 			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
+
+	async appliesOfJobPost(req, res, next) {
+		try {
+			const jobId = req.params.jobId;
+			const job = await Job.findById(jobId);
+			const appliesOfJobPost = await Apply.find({ job_id: job._id });
+			const cvs = await CV;
+			res.status(200).json(appliesOfJobPost);
+		} catch (error) {
 			res.status(500).json("Server error");
 		}
 	}

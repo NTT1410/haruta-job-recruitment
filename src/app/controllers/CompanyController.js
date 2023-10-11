@@ -1,5 +1,6 @@
 const Company = require("../models/Company");
 const dotenv = require("dotenv");
+const Job = require("../models/Job");
 // Secret
 dotenv.config();
 
@@ -85,19 +86,34 @@ class CompanyController {
 
 	async companiesNameAndId(req, res, next) {
 		try {
-			const companiesID = await Company.find().distinct("_id").lean();
-			const companiesName = await Company.find().distinct("name").lean();
-			console.log(companiesID);
-			var companies = [];
-			for (let i = 0; i < companiesID.length; i++) {
-				companies.push({
-					_id: companiesID[i],
-					name: companiesName[i],
-				});
-			}
-
+			// const companiesID = await Company.find().distinct("_id").lean();
+			// const companiesName = await Company.find().distinct("name").lean();
+			// console.log(companiesID);
+			// var companies = [];
+			// for (let i = 0; i < companiesID.length; i++) {
+			// 	companies.push({
+			// 		_id: companiesID[i],
+			// 		name: companiesName[i],
+			// 	});
+			// }
+			const companies = await Company.find().select({ _id: 1, name: 1 }).lean();
 			res.locals.companiesIdName = companies;
 			next();
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
+
+	async jobPostOfCompany(req, res, next) {
+		try {
+			const companyId = req.params.companyId;
+			console.log(companyId);
+			const company = await Company.findById(companyId);
+			const jobPostOfCompany = await Job.find({
+				company_id: company._id,
+			}).lean();
+			res.status(200).json(jobPostOfCompany);
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Server error");

@@ -6,6 +6,7 @@ const jobPostController = require("../app/controllers/JobPostController");
 router.get("/count", jobPostController.countJob);
 router.get("/", jobPostController.show);
 router.post("/", jobPostController.create);
+router.get("/:jobId/applies", jobPostController.appliesOfJobPost);
 router.get("/:jobId", jobPostController.detail);
 router.put("/:jobId", jobPostController.update);
 router.delete("/:jobId", jobPostController.delete);

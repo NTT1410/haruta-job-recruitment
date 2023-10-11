@@ -5,6 +5,7 @@ const companyController = require("../app/controllers/CompanyController");
 
 router.get("/count", companyController.count);
 router.get("/id-name", companyController.companiesNameAndId);
+router.get("/:companyId/job-post", companyController.jobPostOfCompany);
 
 // [GET, POST, PUT, DELETE]
 router.get("/", companyController.show);

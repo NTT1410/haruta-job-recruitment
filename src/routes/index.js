@@ -19,8 +19,8 @@ function route(app) {
 			phone: { $regex: new RegExp("2") },
 			gender: "Male",
 		};
-		const u = await User.find().where(conditions);
-		res.json(u);
+		const users = await User.find().select({ _id: 1, username: 1 });
+		res.json(users);
 	});
 	app.use("*", checkUser);
 
@@ -31,15 +31,14 @@ function route(app) {
 
 	// admin checkAdmin
 	app.use("/admin", checkAdmin, adminRouter);
+	// admin site
+	app.use("/", checkAdmin, siteRouter);
 
 	// cookies
 	app.use("/cookies", checkAdmin, cookies);
 
 	// api
 	app.use("/api", apiRouter);
-
-	// admin site
-	app.use("/", checkAdmin, siteRouter);
 }
 
 module.exports = route;

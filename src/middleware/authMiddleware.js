@@ -15,14 +15,16 @@ const requireAuth = (req, res, next) => {
 		jwt.verify(token, "net ninja secret", (err, decodedToken) => {
 			if (err) {
 				res.locals.user = null;
-				res.redirect("auth/login");
+				// res.json("vao A");
+				res.redirect("/auth/login");
 			} else {
 				next();
 			}
 		});
 	} else {
 		res.locals.user = null;
-		res.redirect("auth/login");
+		// res.json("vao B");
+		res.redirect("/auth/login");
 	}
 };
 
