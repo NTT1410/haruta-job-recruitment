@@ -5,11 +5,12 @@ const companyController = require("../app/controllers/CompanyController");
 
 router.get("/count", companyController.count);
 router.get("/id-name", companyController.companiesNameAndId);
-router.get("/:companyId/job-post", companyController.jobPostOfCompany);
+router.get("/top9", companyController.top9);
 
 // [GET, POST, PUT, DELETE]
 router.get("/", companyController.show);
 router.get("/:companyId", companyController.detail);
+router.get("/:companyId/job-post", companyController.jobPostOfCompany);
 
 // admin
 // router.put("/:companyId", (req, res) => res.send("oe"));

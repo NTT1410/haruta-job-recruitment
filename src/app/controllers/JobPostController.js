@@ -134,7 +134,7 @@ class JobPostController {
 			const cvs = await CV.find({
 				_id: { $in: appliesOfJobPost },
 			});
-			res.status(200).json(appliesOfJobPost);
+			res.status(200).json(cvs);
 		} catch (error) {
 			res.status(500).json("Server error");
 		}

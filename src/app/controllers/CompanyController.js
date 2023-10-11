@@ -1,6 +1,7 @@
 const Company = require("../models/Company");
 const dotenv = require("dotenv");
 const Job = require("../models/Job");
+const Employer = require("../models/Employer");
 // Secret
 dotenv.config();
 
@@ -114,6 +115,24 @@ class CompanyController {
 				company_id: company._id,
 			}).lean();
 			res.status(200).json(jobPostOfCompany);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
+
+	async top9(req, res, next) {
+		try {
+			const countEmplOfCpn = [];
+			const companyId = await Company.find().distinct("_id");
+			companyId.forEach(async (companyId) => {
+				const empl = await Employer.find({
+					company_id: companyId,
+				}).countDocuments();
+				console.log({ companyId, empl });
+				countEmplOfCpn.push({ company_id: "companyId", employerCount: "empl" });
+			});
+			res.status(200).json(countEmplOfCpn);
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Server error");
