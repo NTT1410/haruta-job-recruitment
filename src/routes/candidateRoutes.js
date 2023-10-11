@@ -15,6 +15,7 @@ const CandidateController = require("../app/controllers/CandidateController");
 
 // [GET] /api/candidates
 // check current user
+router.get("/", (req, res) => res.json("oke")); //success
 router.get("/", checkCandidate, candidateController.detail); //success
 router.put("/", checkCandidate, candidateController.update); //success
 router.delete("/", checkCandidate, candidateController.delete); //success

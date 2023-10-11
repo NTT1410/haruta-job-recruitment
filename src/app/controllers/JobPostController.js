@@ -6,6 +6,7 @@ const Job = require("../models/Job");
 const Employer = require("../models/Employer");
 const dotenv = require("dotenv");
 const Apply = require("../models/Apply");
+const CV = require("../models/CV");
 // Secret
 dotenv.config();
 
@@ -127,8 +128,12 @@ class JobPostController {
 		try {
 			const jobId = req.params.jobId;
 			const job = await Job.findById(jobId);
-			const appliesOfJobPost = await Apply.find({ job_id: job._id });
-			const cvs = await CV;
+			const appliesOfJobPost = await Apply.find({ job_id: job._id }).distinct(
+				"cv_id"
+			);
+			const cvs = await CV.find({
+				_id: { $in: appliesOfJobPost },
+			});
 			res.status(200).json(appliesOfJobPost);
 		} catch (error) {
 			res.status(500).json("Server error");
