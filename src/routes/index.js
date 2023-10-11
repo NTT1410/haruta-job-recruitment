@@ -32,14 +32,14 @@ function route(app) {
 	// admin checkAdmin
 	app.use("/admin", checkAdmin, adminRouter);
 
-	// admin site
-	app.use("/", checkAdmin, siteRouter);
-
 	// cookies
 	app.use("/cookies", checkAdmin, cookies);
 
 	// api
 	app.use("/api", apiRouter);
+
+	// admin site
+	app.use("/", checkAdmin, siteRouter);
 }
 
 module.exports = route;

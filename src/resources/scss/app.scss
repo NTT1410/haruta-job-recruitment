@@ -74,7 +74,22 @@ body {
 #table-employer,
 #table-company,
 #table-job {
+	.dataTables_paginate {
+		text-align: center !important;
+		float: none !important;
+	}
 	background: #fff;
 	border-radius: 10px;
 	padding: 10px;
+
+	.paginate_button.current {
+		background: #8383fe !important;
+		border-radius: 20px !important;
+		color: #fff !important;
+	}
+	.paginate_button:hover {
+		background: none;
+		border: none !important;
+		color: #000;
+	}
 }

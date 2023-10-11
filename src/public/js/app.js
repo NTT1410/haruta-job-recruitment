@@ -314,7 +314,8 @@ const tableUsers = (page, path) => {
 	return new DataTable("#example", {
 		ajax: {
 			type: "GET",
-			url: "/admin" + path + "?page=" + page,
+			// url: "/admin" + path + "?page=" + page,
+			url: "/admin" + path,
 		},
 		columns: [
 			{
@@ -416,7 +417,7 @@ var idCandidate = null;
 const loadTable = (page, path) => {
 	Object.assign(DataTable.defaults, {
 		info: false,
-		paging: false,
+		// paging: false,
 	});
 	let table = null;
 	if (tableC.length > 0 || tableE.length > 0) {

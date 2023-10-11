@@ -61,3 +61,23 @@ body {
   background: #fff;
   border-radius: 10px;
   padding: 10px; }
+  #table-candidate .dataTables_paginate,
+  #table-employer .dataTables_paginate,
+  #table-company .dataTables_paginate,
+  #table-job .dataTables_paginate {
+    text-align: center !important;
+    float: none !important; }
+  #table-candidate .paginate_button.current,
+  #table-employer .paginate_button.current,
+  #table-company .paginate_button.current,
+  #table-job .paginate_button.current {
+    background: #8383fe !important;
+    border-radius: 20px !important;
+    color: #fff !important; }
+  #table-candidate .paginate_button:hover,
+  #table-employer .paginate_button:hover,
+  #table-company .paginate_button:hover,
+  #table-job .paginate_button:hover {
+    background: none;
+    border: none !important;
+    color: #000; }
