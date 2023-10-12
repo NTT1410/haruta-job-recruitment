@@ -14,12 +14,18 @@ const User = require("../app/models/User");
 
 function route(app) {
 	app.get("/test", async (req, res) => {
+		let predicates = {};
+		predicates.username = { $regex: new RegExp("ad") };
 		const conditions = {
-			first_name: { $regex: new RegExp("ad") },
-			phone: { $regex: new RegExp("2") },
-			gender: "Male",
+			username: { $regex: new RegExp("ad") },
+			// phone: { $regex: new RegExp("2") },
+			// gender: "Male",
 		};
-		const users = await User.find().select({ _id: 1, username: 1 });
+		console.log(predicates);
+		console.log(conditions);
+		const users = await User.find()
+			.where(predicates)
+			.select({ _id: 1, username: 1 });
 		res.json(users);
 	});
 	app.use("*", checkUser);

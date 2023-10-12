@@ -15,7 +15,40 @@ const pageSize = Number(process.env.PAGE_SIZE);
 class JobPostController {
 	// [GET] /api/follows
 	async show(req, res, next) {
-		// const
+		let predicates = {};
+		const name = req.query.name;
+		const position = req.query.position;
+		const experience = req.query.experience;
+		const benefit = req.query.benefit;
+		const type = req.query.type;
+		const salary = Number(req.query.salary);
+		const salaryTo = Number(req.query.salaryTo);
+		const salaryForm = Number(req.query.salaryForm);
+		if (name) {
+			predicates.name = { $regex: new RegExp(name) };
+		}
+		if (position) {
+			predicates.position = { $regex: new RegExp(position) };
+		}
+		if (experience) {
+			predicates.experience = { $regex: new RegExp(position) };
+		}
+		if (benefit) {
+			predicates.benefit = { $regex: new RegExp(benefit) };
+		}
+		if (type) {
+			predicates.type = { $regex: new RegExp(type) };
+		}
+		if (salary) {
+			predicates.salary = { $eq: salary };
+		} else if (salaryForm && !salaryTo) {
+			predicates.salary = { $gte: salaryForm };
+		} else if (salaryTo && !salaryForm) {
+			predicates.salary = { $lte: salaryTo };
+		} else if (salaryForm && salaryTo) {
+			predicates.salary = { $gte: salaryForm, $lte: salaryTo };
+		}
+		console.log(predicates);
 		try {
 			var page = req.query.page;
 			if (page) {
@@ -24,8 +57,12 @@ class JobPostController {
 					page = 1;
 				}
 				var skip = (page - 1) * pageSize;
-				const jobs = await Job.find().skip(skip).limit(pageSize).lean();
-				let total = await Job.countDocuments();
+				const jobs = await Job.find()
+					.where(predicates)
+					.skip(skip)
+					.limit(pageSize)
+					.lean();
+				let total = jobs.length;
 				let totalPage = Math.ceil(total / 8);
 				res.status(200).json({
 					total: total,
@@ -33,7 +70,7 @@ class JobPostController {
 					data: jobs,
 				});
 			} else {
-				const jobs = await Job.find().lean();
+				const jobs = await Job.find().where(predicates).lean();
 				res.status(200).json({ data: jobs });
 			}
 		} catch (error) {

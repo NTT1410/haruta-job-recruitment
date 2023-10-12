@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Employer = require("./Employer");
 const Schema = mongoose.Schema;
 
 const Company = new Schema({
@@ -37,6 +38,10 @@ const Company = new Schema({
 	status: {
 		type: Boolean,
 		default: false,
+	},
+	numEmployer: {
+		type: Number,
+		default: 0,
 	},
 });
 

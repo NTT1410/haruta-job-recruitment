@@ -61,6 +61,11 @@ body {
   background: #fff;
   border-radius: 10px;
   padding: 10px; }
+  #table-candidate .dataTables_length,
+  #table-employer .dataTables_length,
+  #table-company .dataTables_length,
+  #table-job .dataTables_length {
+    display: none; }
   #table-candidate .dataTables_paginate,
   #table-employer .dataTables_paginate,
   #table-company .dataTables_paginate,
@@ -79,5 +84,5 @@ body {
   #table-company .paginate_button:hover,
   #table-job .paginate_button:hover {
     background: none;
-    border: none !important;
-    color: #000; }
+    border: 1px solid transparent;
+    color: #000 !important; }

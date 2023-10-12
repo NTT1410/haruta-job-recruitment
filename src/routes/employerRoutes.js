@@ -7,14 +7,9 @@ const employerController = require("../app/controllers/EmployerController");
 
 // chua xu ly deletedAt deletedBy
 
-// [GET] /api/employers/
-// check admin
-router.get("/", checkAdmin, employerController.show);
-
 // [GET] /api/employers
 // check current user
 router.get("/", checkEmployer, employerController.detail); //success
-// router.put("/", checkEmployer, (req, res) => res.send("oke")); //success
 router.put("/", checkEmployer, employerController.update); //success
 router.delete("/", checkEmployer, employerController.delete); //success
 

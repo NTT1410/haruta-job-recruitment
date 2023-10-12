@@ -38,6 +38,6 @@ router.use("/follows", followRoutes);
 router.use("/job-post", jobPostRoutes);
 
 // api/apply
-router.use("/apply", applyRoutes);
+// router.use("/apply", applyRoutes);
 
 module.exports = router;

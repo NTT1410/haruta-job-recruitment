@@ -123,16 +123,19 @@ class CompanyController {
 
 	async top9(req, res, next) {
 		try {
-			const countEmplOfCpn = [];
 			const companyId = await Company.find().distinct("_id");
-			companyId.forEach(async (companyId) => {
-				const empl = await Employer.find({
-					company_id: companyId,
-				}).countDocuments();
-				console.log({ companyId, empl });
-				countEmplOfCpn.push({ company_id: "companyId", employerCount: "empl" });
+			companyId.forEach(async (company) => {
+				const companies = await Company.findById(company);
+
+				// Đếm số lượng nhân viên của công ty
+				companies.numEmployer = await Employer.count({
+					company_id: companies._id,
+				});
+
+				// Lưu lại công ty
+				await companies.save();
 			});
-			res.status(200).json(countEmplOfCpn);
+			res.status(200).json(companyId);
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Server error");
