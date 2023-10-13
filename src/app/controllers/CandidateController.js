@@ -30,7 +30,7 @@ class CandidateController {
 					page = 1;
 				}
 				var skip = (page - 1) * pageSize;
-				const users = await User.find()
+				const users = await User.find({}, { password: 0 })
 					.where("_id")
 					.in(userRole)
 					.skip(skip)
@@ -45,7 +45,10 @@ class CandidateController {
 					data: users,
 				});
 			} else {
-				const users = await User.find().where("_id").in(userRole).lean();
+				const users = await User.find({}, { password: 0 })
+					.where("_id")
+					.in(userRole)
+					.lean();
 				res.status(200).json({ data: users });
 			}
 		} catch (error) {
@@ -68,6 +71,7 @@ class CandidateController {
 	async update(req, res, next) {
 		try {
 			const data = req.body;
+			data.day_of_birth = moment(data.day_of_birth, "DD-MM-YYYY");
 			const user = res.locals.user;
 			await User.updateOne({ _id: user._id }, data);
 			res.status(200).json("Update successful");
@@ -91,7 +95,7 @@ class CandidateController {
 	async detailById(req, res, next) {
 		try {
 			const userId = req.params.userId;
-			const user = await User.findById(userId);
+			const user = await User.findById(userId, { password: 0 });
 			res.status(200).json(user);
 		} catch (error) {
 			res.status(404).json("Not Found");
@@ -102,10 +106,12 @@ class CandidateController {
 	async updateById(req, res, next) {
 		try {
 			const data = req.body;
+			data.day_of_birth = moment(data.day_of_birth, "DD-MM-YYYY");
 			const userId = req.params.userId;
 			await User.updateOne({ _id: userId }, data);
 			res.status(200).json("Update successful");
 		} catch (error) {
+			console.log(error);
 			res.status(500).json("Update failed");
 		}
 	}

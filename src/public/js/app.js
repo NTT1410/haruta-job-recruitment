@@ -512,16 +512,16 @@ const paging = (path, table) => {
 const createTable = () => {
 	if (tableC.length > 0) {
 		loadTable(1, pathC);
-		paging(pathC, tableC);
+		// paging(pathC, tableC);
 	} else if (tableE.length > 0) {
 		loadTable(1, pathE);
-		paging(pathE, tableE);
+		// paging(pathE, tableE);
 	} else if (tableCompany.length > 0) {
 		loadTable(1, pathCompany);
-		paging(pathCompany, tableCompany);
+		// paging(pathCompany, tableCompany);
 	} else if (tableJob.length > 0) {
 		loadTable(1, pathJob);
-		paging(pathJob, tableJob);
+		// paging(pathJob, tableJob);
 	}
 };
 createTable();
@@ -555,17 +555,53 @@ const deleteJob = (id) => {
 
 function update(path) {
 	const id = $("#id").val();
-	$.ajax({
-		url: "/api" + path + "/" + id,
-		type: "PUT",
-		data: {
-			first_name: $("#first_name").val(),
-		},
-	})
-		.then((data) => {
-			window.history.back();
+	const first_name = $("#first_name").val();
+	const last_name = $("#last_name").val();
+	const username = $("#username").val();
+	const email = $("#email").val();
+	const phone = $("#phone").val();
+	const day_of_birth = $("#day_of_birth").val();
+	const active = $("#active").val();
+	if (
+		!first_name ||
+		!last_name ||
+		!username ||
+		!email ||
+		!phone ||
+		!day_of_birth ||
+		!active
+	) {
+		// Tạo một thẻ i
+		const i = document.createElement("i");
+		i.classList.add("fas", "fa-exclamation-circle");
+
+		// Tạo một thẻ span
+		const span = document.createElement("span");
+		span.textContent = "Please complete all information";
+
+		$("#error").append(i);
+		$("#error").append(span);
+	} else {
+		const data = {
+			id,
+			first_name,
+			last_name,
+			username,
+			email,
+			phone,
+			day_of_birth,
+			active,
+		};
+		$.ajax({
+			url: "/api" + path + "/" + id,
+			type: "PUT",
+			data: data,
 		})
-		.catch((err) => console.log(err));
+			.then((data) => {
+				window.history.back();
+			})
+			.catch((err) => console.log(err));
+	}
 }
 function updateUser() {
 	const updateC = $("#update-candidate");

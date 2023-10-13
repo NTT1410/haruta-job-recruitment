@@ -68,6 +68,7 @@ class EmployerController {
 	async update(req, res, next) {
 		try {
 			const data = req.body;
+			data.day_of_birth = moment(data.day_of_birth, "DD-MM-YYYY");
 			const user = res.locals.user;
 			await User.updateOne({ _id: user._id }, data);
 			res.status(200).json("Update successful");
@@ -102,6 +103,7 @@ class EmployerController {
 	async updateById(req, res, next) {
 		try {
 			const data = req.body;
+			data.day_of_birth = moment(data.day_of_birth, "DD-MM-YYYY");
 			const userId = req.params.userId;
 			await User.updateOne({ _id: userId }, data);
 			res.status(200).json("Update successful");

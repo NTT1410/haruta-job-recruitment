@@ -131,6 +131,7 @@ class JobPostController {
 		try {
 			const jobId = req.params.jobId;
 			const data = req.body;
+			data.end_date = moment(data.end_date, "DD-MM-YYYY");
 			const user = res.locals.user;
 			await Job.findByIdAndUpdate(jobId, data);
 			res.status(200).json("Update successful");

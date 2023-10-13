@@ -36,7 +36,7 @@ class SiteController {
 	async candidateDetails(req, res, next) {
 		const id = req.params.userId;
 		try {
-			const user = await User.findById(id).lean();
+			const user = await User.findById(id, { password: 0 }).lean();
 			res.render("candidates/show", { user });
 		} catch (error) {
 			res.status(404).json(error);
@@ -46,7 +46,7 @@ class SiteController {
 	async employerDetails(req, res, next) {
 		const id = req.params.userId;
 		try {
-			const user = await User.findById(id).lean();
+			const user = await User.findById(id, { password: 0 }).lean();
 			res.render("employers/show", { user });
 		} catch (error) {
 			res.status(404).json(error);

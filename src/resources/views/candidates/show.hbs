@@ -107,21 +107,6 @@
 				</div>
 			</div>
 			<div class="col">
-				<!-- Email input -->
-				<div class="form-outline">
-					<input
-						type="password"
-						id="password"
-						class="form-control"
-						value={{user.password}}
-					/>
-					<label class="form-label" for="password">Password</label>
-				</div>
-			</div>
-		</div>
-		<hr />
-		<div class="row">
-			<div class="col">
 				<select class="select" id="active" name="active">
 					{{#if user.active}}
 						<option value="true" selected>Active</option>
@@ -133,6 +118,10 @@
 				</select>
 				<label for="active" class="form-label select-label">Status</label>
 			</div>
+		</div>
+		<hr />
+		<div class="row">
+
 			<div class="col">
 				<div class="form-outline datepicker" data-mdb-inline="true">
 					<input
@@ -164,6 +153,12 @@
 						class="btn btn-success btn-rounded btn-block mb-4"
 						id="update-candidate"
 					>Save</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="text-center text-danger" id="error">
 				</div>
 			</div>
 		</div>

@@ -77,6 +77,7 @@ class CompanyController {
 		try {
 			const companyId = req.params.companyId;
 			const data = req.body;
+			data.establishment_date = moment(data.establishment_date, "DD-MM-YYYY");
 			await Company.updateOne({ _id: companyId }, data);
 			res.status(200).json("Update successful");
 		} catch (error) {
