@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 const Job = require("../models/Job");
 const Employer = require("../models/Employer");
 const moment = require("moment");
+const CV = require("../models/CV");
+const Apply = require("../models/Apply");
 // Secret
 dotenv.config();
 
@@ -138,6 +140,33 @@ class CompanyController {
 				await companies.save();
 			});
 			res.status(200).json(companyId);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
+
+	async cv(req, res, next) {
+		try {
+			const companyId = req.params.companyId;
+			const company = await Company.findById(companyId);
+			const jobPostOfCompany = await Job.find({
+				company_id: company._id,
+			}).distinct("_id");
+			var cvs = [];
+			for (var job of jobPostOfCompany) {
+				const appliesOfJobPost = await Apply.find({ job_id: job }).distinct(
+					"cv_id"
+				);
+
+				if (appliesOfJobPost.length > 0) {
+					const cv = await CV.find({
+						_id: { $in: appliesOfJobPost },
+					}).lean();
+					cvs = cvs.concat(cv);
+				}
+			}
+			res.status(200).json(cvs);
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Server error");

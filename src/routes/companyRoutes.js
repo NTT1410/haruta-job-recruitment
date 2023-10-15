@@ -12,6 +12,8 @@ router.get("/", companyController.show);
 router.get("/:companyId", companyController.detail);
 router.get("/:companyId/job-post", companyController.jobPostOfCompany);
 
+router.get("/:companyId/cv", companyController.cv);
+
 // admin
 // router.put("/:companyId", (req, res) => res.send("oe"));
 router.put("/:companyId", companyController.updateById);
