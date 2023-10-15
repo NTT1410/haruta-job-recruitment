@@ -32,7 +32,7 @@ const Job = new Schema({
 		required: true,
 	},
 	salary: {
-		type: BigInt,
+		type: Number,
 		required: true,
 	},
 	description: {

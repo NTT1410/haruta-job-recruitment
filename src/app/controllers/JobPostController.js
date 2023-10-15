@@ -180,6 +180,16 @@ class JobPostController {
 			res.status(500).json("Server error");
 		}
 	}
+
+	async top(req, res, next) {
+		try {
+			const jobs = await Job.find().sort({ salary: -1 }).limit(9);
+			res.status(200).json(jobs);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
 }
 
 module.exports = new JobPostController();

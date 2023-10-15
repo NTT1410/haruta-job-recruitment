@@ -4,6 +4,7 @@ const router = express.Router();
 const jobPostController = require("../app/controllers/JobPostController");
 
 router.get("/count", jobPostController.countJob);
+router.get("/top", jobPostController.top);
 router.get("/", jobPostController.show);
 router.post("/", jobPostController.create);
 router.get("/:jobId/applies", jobPostController.appliesOfJobPost);
