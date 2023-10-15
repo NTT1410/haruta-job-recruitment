@@ -16,6 +16,8 @@ router.delete("/", checkEmployer, employerController.delete); //success
 // count
 router.get("/count", employerController.countEmployer);
 
+router.get("/company", employerController.company);
+
 // [POST] /api/employers
 // check candidate
 router.post("/", employerController.create); //success

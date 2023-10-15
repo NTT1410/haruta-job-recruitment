@@ -11,22 +11,16 @@ const {
 } = require("../middleware/authMiddleware");
 const CandidateController = require("../app/controllers/CandidateController");
 const User = require("../app/models/User");
+const Company = require("../app/models/Company");
 
 function route(app) {
 	app.get("/test", async (req, res) => {
-		let predicates = {};
-		predicates.username = { $regex: new RegExp("ad") };
-		const conditions = {
-			username: { $regex: new RegExp("ad") },
-			// phone: { $regex: new RegExp("2") },
-			// gender: "Male",
-		};
-		console.log(predicates);
-		console.log(conditions);
-		const users = await User.find()
-			.where(predicates)
-			.select({ _id: 1, username: 1 });
-		res.json(users);
+		const companies = await Company.find();
+
+		for (const company of companies) {
+			await company.save();
+		}
+		res.json(companies);
 	});
 	app.use("*", checkUser);
 

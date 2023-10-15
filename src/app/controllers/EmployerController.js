@@ -10,6 +10,7 @@ const Role = require("../models/Role");
 const UserRole = require("../models/UserRole");
 
 const dotenv = require("dotenv");
+const Company = require("../models/Company");
 // Secret
 dotenv.config();
 
@@ -197,6 +198,18 @@ class EmployerController {
 			res.status(200).json(epls);
 			console.log(epls);
 			next();
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
+
+	async company(req, res, next) {
+		try {
+			const user = await res.locals.user;
+			const empl = await Employer.findOne({ user_id: user._id });
+			const company = await Company.findById(empl.company_id).lean();
+			res.status(200).json(company);
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Server error");
