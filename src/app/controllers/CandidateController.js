@@ -9,6 +9,7 @@ const Role = require("../models/Role");
 const UserRole = require("../models/UserRole");
 
 const dotenv = require("dotenv");
+const CV = require("../models/CV");
 // Secret
 dotenv.config();
 
@@ -224,6 +225,18 @@ class CandidateController {
 			res.status(200).json(cdds);
 			console.log(cdds);
 			next();
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
+
+	async candidateOfCV(req, res, next) {
+		try {
+			const cvId = req.params.cvId;
+			const cv = await CV.findById(cvId).lean();
+			const user = await User.findById(cv.user_id);
+			res.status(200).json(user);
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Server error");

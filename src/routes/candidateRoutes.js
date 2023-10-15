@@ -41,6 +41,8 @@ router.get("/count", CandidateController.countCandidate);
 router.post("/", candidateController.create); //success
 // router.post("/", (req, res) => res.json("test")); //success
 
+router.get("/cv/:cvId", candidateController.candidateOfCV); //success
+
 // [GET] /api/candidates/:userId
 //  check admin
 router.get("/:userId", checkAdmin, candidateController.detail); //success
