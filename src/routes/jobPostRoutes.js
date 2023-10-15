@@ -8,6 +8,7 @@ router.get("/", jobPostController.show);
 router.post("/", jobPostController.create);
 router.get("/:jobId/applies", jobPostController.appliesOfJobPost);
 router.get("/:jobId", jobPostController.detail);
+// router.put("/:jobId", (req, res) => res.send("oke"));
 router.put("/:jobId", jobPostController.update);
 router.delete("/:jobId", jobPostController.delete);
 

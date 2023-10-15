@@ -7,6 +7,7 @@ const Employer = require("../models/Employer");
 const dotenv = require("dotenv");
 const Apply = require("../models/Apply");
 const CV = require("../models/CV");
+const moment = require("moment");
 // Secret
 dotenv.config();
 
@@ -133,9 +134,11 @@ class JobPostController {
 			const data = req.body;
 			data.end_date = moment(data.end_date, "DD-MM-YYYY");
 			const user = res.locals.user;
+			console.log(data);
 			await Job.findByIdAndUpdate(jobId, data);
 			res.status(200).json("Update successful");
 		} catch (error) {
+			console.log(error);
 			res.status(500).json("Server error");
 		}
 	}
