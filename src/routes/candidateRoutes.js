@@ -45,7 +45,8 @@ router.get("/cv/:cvId", candidateController.candidateOfCV); //success
 
 // [GET] /api/candidates/:userId
 //  check admin
-router.get("/:userId", checkAdmin, candidateController.detail); //success
+// router.get("/:userId", checkAdmin, (req, res) => res.send("oke")); //success
+router.get("/:userId", checkAdmin, candidateController.detailById); //success
 router.put("/:userId", checkAdmin, candidateController.updateById); //success
 // router.put("/:userId", (req, res) => res.send("oke")); //success
 router.delete("/:userId", checkAdmin, candidateController.deleteById); //success
