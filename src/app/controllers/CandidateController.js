@@ -3,13 +3,14 @@ const moment = require("moment");
 const { handleErrors } = require("../../middleware/errors");
 const { createToken } = require("../../middleware/token");
 
-const Candidate = require("../models/Candidate");
 const User = require("../models/User");
 const Role = require("../models/Role");
 const UserRole = require("../models/UserRole");
 
 const dotenv = require("dotenv");
 const CV = require("../models/CV");
+const SkillCandidate = require("../models/SkillCandidate");
+const Follow = require("../models/Follow");
 // Secret
 dotenv.config();
 
@@ -62,7 +63,7 @@ class CandidateController {
 	async detail(req, res, next) {
 		try {
 			const user = await res.locals.user;
-			res.status(200).json(user);
+			res.status(200).json(user, { password: 0 });
 		} catch (error) {
 			res.status(404).json("Not Found");
 		}
@@ -88,6 +89,10 @@ class CandidateController {
 		try {
 			const user = res.locals.user;
 			await User.deleteOne({ _id: user._id });
+			await UserRole.deleteOne({ user_id: user._id });
+			await SkillCandidate.deleteMany({ user_id: user._id });
+			await Follow.deleteMany({ user_id: user._id });
+			await CV.deleteMany({ user_id: user._id });
 			res.status(200).json("Delete successful");
 		} catch (error) {
 			res.status(500).json("Delete failed");
@@ -98,8 +103,8 @@ class CandidateController {
 	async detailById(req, res, next) {
 		try {
 			const userId = req.params.userId;
-			const user = await User.findById(userId, { password: 0 });
-			res.status(200).json(user);
+			const userById = await User.findById(userId, { password: 0 });
+			res.status(200).json(userById);
 		} catch (error) {
 			res.status(404).json("Not Found");
 		}
@@ -126,8 +131,11 @@ class CandidateController {
 		try {
 			const userId = req.params.userId;
 			console.log(userId);
-			// await UserRole.deleteOne({ user_id: userId });
 			await User.deleteOne({ _id: userId });
+			await UserRole.deleteOne({ user_id: userId });
+			await SkillCandidate.deleteMany({ user_id: userId });
+			await Follow.deleteMany({ user_id: userId });
+			await CV.deleteMany({ user_id: userId });
 			res.status(200).json("Delete successful");
 		} catch (error) {
 			console.log(error);
@@ -137,6 +145,7 @@ class CandidateController {
 
 	// [POST] /candidates/
 	async create(req, res, next) {
+		console.log(req.files.path);
 		const day_of_birth = req.body.day_of_birth;
 		if (day_of_birth) {
 			day_of_birth = moment(req.body.day_of_birth, "DD-MM-YYYY");

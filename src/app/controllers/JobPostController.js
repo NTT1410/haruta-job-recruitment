@@ -1,9 +1,5 @@
-const userRole = require("../models/UserRole");
-const Role = require("../models/Role");
-const Follow = require("../models/Follow");
-const Company = require("../models/Company");
 const Job = require("../models/Job");
-const Employer = require("../models/Employer");
+const JobSkill = require("../models/JobSkill");
 const dotenv = require("dotenv");
 const Apply = require("../models/Apply");
 const CV = require("../models/CV");
@@ -149,6 +145,8 @@ class JobPostController {
 			const jobId = req.params.jobId;
 			const user = res.locals.user;
 			await Job.findByIdAndDelete(jobId);
+			await JobSkill.deleteMany({ job_id: jobId });
+			await Apply.deleteMany({ job_id: jobId });
 			res.status(200).json("delete successful");
 		} catch (error) {
 			res.status(500).json("Server error");

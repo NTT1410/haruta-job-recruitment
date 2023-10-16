@@ -24,7 +24,7 @@ router.post("/", employerController.create); //success
 
 // [GET] /api/employers/:userId
 //  check admin
-router.get("/:userId", checkAdmin, employerController.detail); //success
+router.get("/:userId", checkAdmin, employerController.detailById); //success
 router.put("/:userId", checkAdmin, employerController.updateById); //success
 router.delete("/:userId", checkAdmin, employerController.deleteById); //success
 

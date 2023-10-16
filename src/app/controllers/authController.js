@@ -2,6 +2,7 @@ const User = require("../models/User");
 const UserRole = require("../models/UserRole");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
+const bcrypt = require("bcrypt");
 
 const { handleErrors } = require("../../middleware/errors");
 const Role = require("../models/Role");
@@ -114,6 +115,72 @@ module.exports.login_e = async (req, res) => {
 		const errors = handleErrors(err);
 		res.status(400).json({ errors });
 	}
+};
+
+module.exports.update = async (req, res) => {
+	const token = req.cookies.jwt;
+	const { oldPassword, newPassword, confirmPassword } = req.body;
+	if (token) {
+		jwt.verify(token, "net ninja secret", async (err, decodedToken) => {
+			if (err) {
+				console.log(err.message);
+				res.status(500).json("Invalid token");
+			} else {
+				try {
+					const currentUser = await User.findById(decodedToken.id).lean();
+					if (
+						oldPassword &&
+						newPassword &&
+						confirmPassword &&
+						newPassword === confirmPassword
+					) {
+						const auth = await bcrypt.compare(
+							oldPassword,
+							currentUser.password
+						);
+						if (auth) {
+							const salt = await bcrypt.genSalt();
+							currentUser.password = await bcrypt.hash(newPassword, salt);
+							await User.updateOne(
+								{ _id: currentUser._id },
+								{ password: currentUser.password }
+							);
+							res.status(200).json("Updated successfully");
+						} else {
+							res.status(400).json("Client error");
+						}
+					} else {
+						res.status(400).json("Client error");
+					}
+				} catch (error) {
+					console.log(error);
+					const errors = handleErrors(error);
+					res.status(500).json({ errors });
+				}
+			}
+		});
+	} else {
+		res.status(500).json("Token not found");
+	}
+	// try {
+	// 	const user = await User.login(username, password);
+	// 	const userRole = await UserRole.findOne({ user_id: user._id });
+	// 	const role = await Role.findById(userRole.role_id);
+	// 	if (role.name == "employer") {
+	// 		if (user.active) {
+	// 			const token = createToken(user._id);
+	// 			res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+	// 			res.status(200).json({ user: user._id });
+	// 		} else {
+	// 			res.status(401).send("Account is not activated.");
+	// 		}
+	// 	} else {
+	// 		res.status(400).json("User not a employer");
+	// 	}
+	// } catch (err) {
+	// 	const errors = handleErrors(err);
+	// 	res.status(400).json({ errors });
+	// }
 };
 
 // da xong

@@ -1,4 +1,3 @@
-const Candidate = require("../models/Candidate");
 const User = require("../models/User");
 const Skill = require("../models/Skill");
 const SkillCandidate = require("../models/SkillCandidate");

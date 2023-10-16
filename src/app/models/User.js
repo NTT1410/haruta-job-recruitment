@@ -93,6 +93,12 @@ User.pre("save", async function (next) {
 	next();
 });
 
+// User.pre(["updateOne", "findOneAndUpdate"], async function (next) {
+// 	const salt = await bcrypt.genSalt();
+// 	this.password = await bcrypt.hash(this.password, salt);
+// 	next();
+// });
+
 // static method to login user
 User.statics.login = async function (username, password) {
 	const user = await this.findOne({ username });

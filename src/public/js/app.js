@@ -643,25 +643,16 @@ const updateJob = () => {
 };
 
 function create(data, path) {
-	$.ajax({
-		url: "/api" + path,
-		type: "POST",
-		data: {
-			first_name: data.first_name,
-			last_name: data.last_name,
-			username: data.username,
-			password: data.password,
-			email: data.email,
-			phone: data.phone,
-		},
+	fetch("/api" + path, {
+		method: "POST",
+		body: data, // Payload is formData object
 	})
-		.then((data) => {
-			window.history.back();
-		})
+		.then((data) => window.history.back())
 		.catch((err) => console.log(err));
 }
 
 function createUser() {
+	const files = document.getElementById("files");
 	const first_name = $("#first_name").val();
 	const last_name = $("#last_name").val();
 	const username = $("#username").val();
@@ -679,23 +670,24 @@ function createUser() {
 	) {
 		alert("Please do not leave it blank");
 	} else {
-		const data = {
-			first_name: first_name,
-			last_name: last_name,
-			username: username,
-			password: password,
-			email: email,
-			phone: phone,
-		};
-
+		const formData = new FormData();
+		formData.append("first_name", first_name);
+		formData.append("last_name", last_name);
+		formData.append("username", username);
+		formData.append("password", password);
+		formData.append("email", email);
+		formData.append("phone", phone);
+		for (let i = 0; i < files.files.length; i++) {
+			formData.append("files", files.files[i]);
+		}
 		const createC = $("#create-candidate");
 		const createE = $("#create-employer");
 		const pathC = "/candidates";
 		const pathE = "/employers";
 		if (createC.length > 0) {
-			create(data, pathC);
+			create(formData, pathC);
 		} else if (createE.length > 0) {
-			create(data, pathE);
+			create(formData, pathE);
 		}
 	}
 }

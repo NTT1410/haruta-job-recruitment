@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const companyController = require("../app/controllers/CompanyController");
+const { checkAdmin } = require("../middleware/authMiddleware");
 
 router.get("/count", companyController.count);
 router.get("/id-name", companyController.companiesNameAndId);
@@ -16,10 +17,10 @@ router.get("/:companyId/cv", companyController.cv);
 
 // admin
 // router.put("/:companyId", (req, res) => res.send("oe"));
-router.put("/:companyId", companyController.updateById);
+router.put("/:companyId", checkAdmin, companyController.updateById);
 
 // admin
 // router.delete("/:companyId", (req, res) => res.json(req.params.companyId));
-router.delete("/:companyId", companyController.deleteById);
+router.delete("/:companyId", checkAdmin, companyController.deleteById);
 
 module.exports = router;

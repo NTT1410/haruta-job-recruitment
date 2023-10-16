@@ -3,7 +3,6 @@ const moment = require("moment");
 const { handleErrors } = require("../../middleware/errors");
 const { createToken } = require("../../middleware/token");
 
-const Candidate = require("../models/Candidate");
 const Employer = require("../models/Employer");
 const User = require("../models/User");
 const Role = require("../models/Role");
@@ -31,7 +30,7 @@ class EmployerController {
 					page = 1;
 				}
 				var skip = (page - 1) * pageSize;
-				const users = await User.find()
+				const users = await User.find({}, { password: 0 })
 					.where("_id")
 					.in(userRole)
 					.skip(skip)
@@ -46,7 +45,10 @@ class EmployerController {
 					data: users,
 				});
 			} else {
-				const users = await User.find().where("_id").in(userRole).lean();
+				const users = await User.find({}, { password: 0 })
+					.where("_id")
+					.in(userRole)
+					.lean();
 				res.status(200).json({ data: users });
 			}
 		} catch (error) {
@@ -59,7 +61,7 @@ class EmployerController {
 	async detail(req, res, next) {
 		try {
 			const user = await res.locals.user;
-			res.status(200).json(user);
+			res.status(200).json(user, { password: 0 });
 		} catch (error) {
 			res.status(404).json("Not Found");
 		}
@@ -85,6 +87,8 @@ class EmployerController {
 		try {
 			const user = res.locals.user;
 			await User.deleteOne({ _id: user._id });
+			await UserRole.deleteOne({ user_id: user._id });
+			await Employer.deleteOne({ user_id: user._id });
 			res.status(200).json("Delete successful");
 		} catch (error) {
 			res.status(500).json("Delete failed");
@@ -95,8 +99,8 @@ class EmployerController {
 	async detailById(req, res, next) {
 		try {
 			const userId = req.params.userId;
-			const user = await User.findById(userId);
-			res.status(200).json(user);
+			const userById = await User.findById(userId, { password: 0 });
+			res.status(200).json(userById);
 		} catch (error) {
 			res.status(404).json("Not Found");
 		}
@@ -122,8 +126,8 @@ class EmployerController {
 		try {
 			const userId = req.params.userId;
 			console.log(userId);
-			await Candidate.deleteOne({ user_id: userId });
 			await UserRole.deleteOne({ user_id: userId });
+			await Employer.deleteOne({ user_id: userId });
 			await User.deleteOne({ _id: userId });
 			res.status(200).json("Delete successful");
 		} catch (error) {

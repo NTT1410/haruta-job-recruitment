@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CV = new Schema({
-	candidate_id: {
+	user_id: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "Cadidate",
+		ref: "User",
 		required: true,
 	},
 	file: {

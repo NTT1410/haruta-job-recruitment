@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const User = require("../app/models/User");
-const Candidate = require("../app/models/Candidate");
 const Employer = require("../app/models/Employer");
 const UserRole = require("../app/models/UserRole");
 const Role = require("../app/models/Role");

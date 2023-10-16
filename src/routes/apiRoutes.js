@@ -17,7 +17,6 @@ const applyRoutes = require("./applyRoutes");
 
 // /api/candidates
 router.use("/candidates", candidateRoutes);
-// router.get("/candidates", (req, res, next) => res.send("test"));
 
 // /api/employers
 router.use("/employers", employerRoutes);

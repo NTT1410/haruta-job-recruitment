@@ -30,14 +30,14 @@ class UserRoleController {
 	// [POST] /api/follows
 	async create(req, res, next) {
 		try {
-			const companyId = req.body.company_id;
+			const companyId = req.params.companyId;
 			const user = res.locals.user;
 			const company = await Company.findById(companyId).lean();
-			const exist = await Follow.find({
+			const exist = await Follow.findOne({
 				user_id: user._id,
 				company_id: company._id,
 			}).lean();
-			if (exist.length <= 0) {
+			if (!exist) {
 				const follow = await Follow.create({
 					user_id: user._id,
 					company_id: company._id,
@@ -45,6 +45,26 @@ class UserRoleController {
 				res.status(200).json(follow);
 			} else {
 				res.status(400).json("Followed");
+			}
+		} catch (error) {
+			res.status(500).json("Server error");
+		}
+	}
+
+	async delete(req, res, next) {
+		try {
+			const companyId = req.params.companyId;
+			const user = res.locals.user;
+			const company = await Company.findById(companyId).lean();
+			const exist = await Follow.findOne({
+				user_id: user._id,
+				company_id: company._id,
+			}).lean();
+			if (exist) {
+				await Follow.deleteOne({ _id: exist._id });
+				res.status(200).json("Unfollowed");
+			} else {
+				res.status(400).json("Not Found");
 			}
 		} catch (error) {
 			res.status(500).json("Server error");

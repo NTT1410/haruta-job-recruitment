@@ -46,6 +46,9 @@ const Company = new Schema({
 	logo: {
 		type: String,
 	},
+	description: {
+		type: String,
+	},
 });
 
 module.exports = mongoose.model("Company", Company);
