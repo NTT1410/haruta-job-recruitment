@@ -14,7 +14,6 @@ const User = require("../app/models/User");
 const Company = require("../app/models/Company");
 
 function route(app) {
-	app.get("/test", async (req, res) => res.render("test"));
 	app.use("*", checkUser);
 
 	// auth
