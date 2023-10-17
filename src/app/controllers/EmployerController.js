@@ -71,6 +71,10 @@ class EmployerController {
 	async update(req, res, next) {
 		try {
 			const data = req.body;
+			if (req.file) {
+				const avatar = req.file.path;
+				data.avatar = avatar;
+			}
 			if (data.day_of_birth) {
 				data.day_of_birth = moment(data.day_of_birth, "DD-MM-YYYY");
 			}
@@ -110,6 +114,10 @@ class EmployerController {
 	async updateById(req, res, next) {
 		try {
 			const data = req.body;
+			if (req.file) {
+				const avatar = req.file.path;
+				data.avatar = avatar;
+			}
 			if (data.day_of_birth) {
 				data.day_of_birth = moment(data.day_of_birth, "DD-MM-YYYY");
 			}
@@ -143,7 +151,6 @@ class EmployerController {
 			day_of_birth = moment(req.body.day_of_birth, "DD-MM-YYYY");
 		}
 		const {
-			avatar,
 			username,
 			password,
 			first_name,
@@ -152,6 +159,7 @@ class EmployerController {
 			phone,
 			company_id,
 		} = req.body;
+		const avatar = req.file.path;
 		try {
 			const user = await User.create({
 				avatar,

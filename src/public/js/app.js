@@ -284,9 +284,9 @@ const templatesTableJob = () => {
 
 function fullName(data) {
 	const img =
-		"<img src=" +
+		'<img src="' +
 		data.avatar +
-		'style="width: 45px; height: 45px" class="rounded-circle" />';
+		'"style="width: 45px; height: 45px" class="rounded-circle" />';
 	const name =
 		'<div class="ms-3">' +
 		'<p class="fw-bold mb-1 td-fullname">' +
@@ -652,7 +652,7 @@ function create(data, path) {
 }
 
 function createUser() {
-	const files = document.getElementById("files");
+	const file = document.getElementById("file");
 	const first_name = $("#first_name").val();
 	const last_name = $("#last_name").val();
 	const username = $("#username").val();
@@ -677,9 +677,8 @@ function createUser() {
 		formData.append("password", password);
 		formData.append("email", email);
 		formData.append("phone", phone);
-		for (let i = 0; i < files.files.length; i++) {
-			formData.append("files", files.files[i]);
-		}
+		formData.append("file", file.files[0], "file");
+		console.log(formData.files);
 		const createC = $("#create-candidate");
 		const createE = $("#create-employer");
 		const pathC = "/candidates";

@@ -87,7 +87,7 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views"));
 
-app.use(upload.array("files"));
+// app.use(upload.array("files"));
 
 // Route
 route(app);

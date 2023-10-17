@@ -62,7 +62,7 @@ const User = new Schema(
 		},
 		active: {
 			type: Boolean,
-			default: false,
+			default: true,
 		},
 		slug: { type: String, slug: "first_name" },
 	},

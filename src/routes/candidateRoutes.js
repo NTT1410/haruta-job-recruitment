@@ -7,6 +7,8 @@ const candidateController = require("../app/controllers/CandidateController");
 const SkillCandidateController = require("../app/controllers/SkillCandidateController");
 const CandidateController = require("../app/controllers/CandidateController");
 
+const fileUploader = require("../config/cloudinary.config");
+
 // chua xu ly deletedAt deletedBy
 
 // [GET] /api/candidates/
@@ -17,7 +19,12 @@ const CandidateController = require("../app/controllers/CandidateController");
 // check current user
 
 router.get("/", checkCandidate, candidateController.detail); //success
-router.put("/", checkCandidate, candidateController.update); //success
+router.put(
+	"/",
+	checkCandidate,
+	fileUploader.single("file"),
+	candidateController.update
+); //success
 router.delete("/", checkCandidate, candidateController.delete); //success
 
 // [GET, POST, PUT, DELETE] /api/candidates/skill-candidate
@@ -38,7 +45,7 @@ router.get("/count", CandidateController.countCandidate);
 
 // [POST] /api/candidates
 // check candidate
-router.post("/", candidateController.create); //success
+router.post("/", fileUploader.single("file"), candidateController.create); //success
 // router.post("/", (req, res) => res.json("test")); //success
 
 router.get("/cv/:cvId", candidateController.candidateOfCV); //success
@@ -47,7 +54,12 @@ router.get("/cv/:cvId", candidateController.candidateOfCV); //success
 //  check admin
 // router.get("/:userId", checkAdmin, (req, res) => res.send("oke")); //success
 router.get("/:userId", checkAdmin, candidateController.detailById); //success
-router.put("/:userId", checkAdmin, candidateController.updateById); //success
+router.put(
+	"/:userId",
+	checkAdmin,
+	fileUploader.single("file"),
+	candidateController.updateById
+); //success
 // router.put("/:userId", (req, res) => res.send("oke")); //success
 router.delete("/:userId", checkAdmin, candidateController.deleteById); //success
 
