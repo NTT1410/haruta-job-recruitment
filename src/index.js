@@ -25,21 +25,6 @@ app.use(bodyParser.json());
 // for parsing application/xwww-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Start by creating some disk storage options:
-const storage = multer.diskStorage({
-	destination: function (req, file, callback) {
-		callback(null, path.join(__dirname, "public/img"));
-	},
-	// Sets file(s) to be saved in uploads folder in same directory
-	filename: function (req, file, callback) {
-		callback(null, file.originalname);
-	},
-	// Sets saved filename(s) to be original filename(s)
-});
-
-// Set saved storage options:
-const upload = multer({ storage: storage });
-
 //connect to db
 db.connect();
 
@@ -86,8 +71,6 @@ app.engine(
 );
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views"));
-
-// app.use(upload.array("files"));
 
 // Route
 route(app);

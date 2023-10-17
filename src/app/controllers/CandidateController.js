@@ -263,6 +263,23 @@ class CandidateController {
 			res.status(500).json("Server error");
 		}
 	}
+
+	async createCV(req, res, next) {
+		try {
+			const user = res.locals.user;
+			const title = req.body.title;
+			const file = req.file.path;
+			const cv = await CV.create({
+				user_id: user._id,
+				file: file,
+				title: title,
+			});
+			res.status(200).json(cv);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
 }
 
 module.exports = new CandidateController();
