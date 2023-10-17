@@ -348,7 +348,7 @@ const tableCompanies = (page, path) => {
 	return new DataTable("#example", {
 		ajax: {
 			type: "GET",
-			url: "/admin" + path + "?page=" + page,
+			url: "/admin" + path,
 		},
 		columns: [
 			{ data: "name" },
@@ -380,7 +380,7 @@ const tableJobs = (page, path) => {
 	return new DataTable("#example", {
 		ajax: {
 			type: "GET",
-			url: "/admin" + path + "?page=" + page,
+			url: "/admin" + path,
 		},
 		columns: [
 			{

@@ -142,8 +142,16 @@ class EmployerController {
 		if (day_of_birth) {
 			day_of_birth = moment(req.body.day_of_birth, "DD-MM-YYYY");
 		}
-		const { avatar, username, password, first_name, last_name, email, phone } =
-			req.body;
+		const {
+			avatar,
+			username,
+			password,
+			first_name,
+			last_name,
+			email,
+			phone,
+			company_id,
+		} = req.body;
 		try {
 			const user = await User.create({
 				avatar,
@@ -157,6 +165,12 @@ class EmployerController {
 			});
 			const role = await Role.findOne({ name: "employer" });
 			await UserRole.create({ role_id: role.id, user_id: user._id });
+			if (company_id) {
+				await Employer.create({ user_id: user._id, company_id: company_id });
+				const company = await Company.findById(company_id);
+				company.numEmployer = company.numEmployer + 1;
+				await company.save();
+			}
 			res.status(201).json({ user: user._id });
 		} catch (err) {
 			console.log(err);
