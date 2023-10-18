@@ -264,6 +264,17 @@ class CandidateController {
 		}
 	}
 
+	async getListCV(req, res, next) {
+		try {
+			const user = res.locals.user;
+			const cvs = await CV.find({ user_id: user._id });
+			res.status(200).json(cvs);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
+
 	async createCV(req, res, next) {
 		try {
 			const user = res.locals.user;

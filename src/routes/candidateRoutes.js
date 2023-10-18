@@ -49,6 +49,7 @@ router.post("/", fileUploader.single("file"), candidateController.create); //suc
 // router.post("/", (req, res) => res.json("test")); //success
 
 router.get("/cv/:cvId", candidateController.candidateOfCV); //success
+router.get("/cv", candidateController.getListCV); //success
 router.post(
 	"/cv",
 	fileUploader.single("file"),
