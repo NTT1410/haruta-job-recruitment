@@ -63,8 +63,9 @@ class CandidateController {
 	async detail(req, res, next) {
 		try {
 			const user = await res.locals.user;
-			res.status(200).json(user, { password: 0 });
+			res.status(200).json(user);
 		} catch (error) {
+			console.log(error);
 			res.status(404).json("Not Found");
 		}
 	}

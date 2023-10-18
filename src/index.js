@@ -23,7 +23,7 @@ dotenv.config();
 app.use(bodyParser.json());
 
 // for parsing application/xwww-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 //connect to db
 db.connect();

@@ -56,7 +56,9 @@ const checkCandidate = (req, res, next) => {
 				console.log(err.message);
 				res.status(500).json("Invalid token");
 			} else {
-				const user = await User.findById(decodedToken.id).lean();
+				const user = await User.findById(decodedToken.id, {
+					password: 0,
+				}).lean();
 				const userRole = await UserRole.findOne({ user_id: user._id }).lean();
 				const role = await Role.findById(userRole.role_id).lean();
 				if (role.name === "candidate" || role.name === "admin") {
@@ -80,7 +82,9 @@ const checkEmployer = (req, res, next) => {
 				console.log(err.message);
 				res.status(500).json("Invalid token");
 			} else {
-				const user = await User.findById(decodedToken.id).lean();
+				const user = await User.findById(decodedToken.id, {
+					password: 0,
+				}).lean();
 				const userRole = await UserRole.findOne({ user_id: user._id }).lean();
 				const role = await Role.findById(userRole.role_id).lean();
 				if (role.name === "employer" || role.name === "admin") {
@@ -104,7 +108,9 @@ const checkAdmin = (req, res, next) => {
 				console.log(err.message);
 				res.status(500).json("Invalid token");
 			} else {
-				const user = await User.findById(decodedToken.id).lean();
+				const user = await User.findById(decodedToken.id, {
+					password: 0,
+				}).lean();
 				try {
 					const userRole = await UserRole.findOne({ user_id: user._id });
 					const role = await Role.findById(userRole.role_id);
