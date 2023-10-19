@@ -70,7 +70,7 @@ class EmployerController {
 	// [PUT] /candidates/
 	async update(req, res, next) {
 		try {
-			const data = req.body;
+			let data = req.body;
 			if (req.file) {
 				const avatar = req.file.path;
 				data.avatar = avatar;
@@ -113,7 +113,7 @@ class EmployerController {
 	// [PUT] /candidates/:candidateId
 	async updateById(req, res, next) {
 		try {
-			const data = req.body;
+			let data = req.body;
 			if (req.file) {
 				const avatar = req.file.path;
 				data.avatar = avatar;
@@ -146,7 +146,7 @@ class EmployerController {
 
 	// [POST] /candidates/
 	async create(req, res, next) {
-		const day_of_birth = req.body.day_of_birth;
+		let day_of_birth = req.body.day_of_birth;
 		if (day_of_birth) {
 			day_of_birth = moment(req.body.day_of_birth, "DD-MM-YYYY");
 		}
