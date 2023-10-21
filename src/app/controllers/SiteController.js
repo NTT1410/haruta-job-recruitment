@@ -33,6 +33,14 @@ class SiteController {
 		res.render("apply");
 	}
 
+	info(req, res, next) {
+		res.render("show");
+	}
+
+	updatePassword(req, res, next) {
+		res.render("updatePassword");
+	}
+
 	async candidateDetails(req, res, next) {
 		const id = req.params.userId;
 		try {

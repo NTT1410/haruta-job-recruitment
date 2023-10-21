@@ -16,5 +16,7 @@ router.get("/candidates", candidateController.show);
 router.get("/employers", employerController.show);
 router.get("/companies", companyController.show);
 router.get("/job-post", jobPostController.show);
+router.get("/info", siteController.info);
+router.get("/update-password", siteController.updatePassword);
 
 module.exports = router;

@@ -642,6 +642,50 @@ const updateJob = () => {
 		.catch((err) => console.log(err));
 };
 
+const updatePassword = () => {
+	const oldPassword = $("#oldPassword").val();
+	const newPassword = $("#newPassword").val();
+	const confirmPassword = $("#confirmPassword").val();
+	if (!oldPassword || !newPassword || !confirmPassword) {
+		// Tạo một thẻ i
+		const i = document.createElement("i");
+		i.classList.add("fas", "fa-exclamation-circle");
+
+		// Tạo một thẻ span
+		const span = document.createElement("span");
+		span.textContent = "Please complete all information";
+
+		$("#error").append(i);
+		$("#error").append(span);
+	} else if (newPassword !== confirmPassword) {
+		// Tạo một thẻ i
+		const i = document.createElement("i");
+		i.classList.add("fas", "fa-exclamation-circle");
+
+		// Tạo một thẻ span
+		const span = document.createElement("span");
+		span.textContent = "Confirm password is incorrect";
+
+		$("#error").append(i);
+		$("#error").append(span);
+	} else {
+		const data = {
+			oldPassword,
+			newPassword,
+			confirmPassword,
+		};
+		$.ajax({
+			url: "/auth/update-password",
+			type: "PUT",
+			data: data,
+		})
+			.then((data) => {
+				window.history.back();
+			})
+			.catch((err) => console.log(err));
+	}
+};
+
 function create(data, path) {
 	fetch("/api" + path, {
 		method: "POST",
