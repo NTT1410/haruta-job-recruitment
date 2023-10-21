@@ -59,7 +59,8 @@ class JobPostController {
 					.skip(skip)
 					.limit(pageSize)
 					.lean();
-				let total = jobs.length;
+				let total = await Job.find();
+				total = total.length;
 				let totalPage = Math.ceil(total / 8);
 				res.status(200).json({
 					total: total,
