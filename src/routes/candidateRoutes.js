@@ -57,6 +57,12 @@ router.post(
 	candidateController.createCV
 ); //success
 
+router.post(
+	"/:cvId/apply/:jobId",
+	checkCandidate,
+	candidateController.createCV
+);
+
 // [GET] /api/candidates/:userId
 //  check admin
 // router.get("/:userId", checkAdmin, (req, res) => res.send("oke")); //success

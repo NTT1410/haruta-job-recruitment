@@ -11,6 +11,7 @@ const dotenv = require("dotenv");
 const CV = require("../models/CV");
 const SkillCandidate = require("../models/SkillCandidate");
 const Follow = require("../models/Follow");
+const Apply = require("../models/Apply");
 // Secret
 dotenv.config();
 
@@ -287,6 +288,22 @@ class CandidateController {
 				title: title,
 			});
 			res.status(200).json(cv);
+		} catch (error) {
+			console.log(error);
+			res.status(500).json("Server error");
+		}
+	}
+
+	async apply(req, res, next) {
+		try {
+			const user = res.locals.user;
+			const cvId = res.params.cvId;
+			const jobId = res.params.jobId;
+			const apply = await Apply.create({
+				job_id: jobId,
+				cv_id: cvId,
+			});
+			res.status(200).json("Apply success");
 		} catch (error) {
 			console.log(error);
 			res.status(500).json("Server error");
